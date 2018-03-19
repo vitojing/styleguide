@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Google JavaScript Style Guide</title>
+<title>Google JavaScript 代码规范</title>
 <link rel="stylesheet" href="javaguide.css">
 <script src="include/styleguide.js"></script>
 <link rel="shortcut icon" href="https://www.google.com/favicon.ico">
@@ -10,21 +10,20 @@
 </head>
 <body onload="initStyleGuide();">
 <div id="content">
-<h1>Google JavaScript Style Guide</h1>
-<h2 id="introduction">1 Introduction</h2>
+<h1>Google JavaScript 代码规范</h1>
+<h2 id="introduction">1 介绍</h2>
 
-<p>This document serves as the <strong>complete</strong> definition of Google&#8217;s coding standards
-for source code in the JavaScript programming language. A JavaScript source file
-is described as being <em>in Google Style</em> if and only if it adheres to the rules
-herein.</p>
+<p>本文档定义了Google Javascript语言的编码规范，一个Javascript源代码只有符合本文当所有规范才算符合Google 编码规范。</p>
+<p>This document serves as the complete definition of Google’s coding standards for source code in the JavaScript programming language. A JavaScript source file is described as being in Google Style if and only if it adheres to the rules herein.</p>
 
+<p>与其他语言类似，代码规范不仅包含影响美感的代码格式，也包含其他规约和编码标准。然而，此文当侧重于一般情况下我们必须遵守的规则，而避免提出一些可能难以执行的建议。</p>
 <p>Like other programming style guides, the issues covered span not only aesthetic
 issues of formatting, but other types of conventions or coding standards as
 well. However, this document focuses primarily on the hard-and-fast rules that
 we follow universally, and avoids giving advice that isn't clearly enforceable
 (whether by human or tool). </p>
 
-<h3 id="terminology-notes">1.1 Terminology notes</h3>
+<h3 id="terminology-notes">1.1 术语说明</h3>
 
 <p>In this document, unless otherwise clarified:</p>
 
@@ -48,149 +47,122 @@ are in Google Style, they may not illustrate the <em>only</em> stylish way to re
 the code. Optional formatting choices made in examples must not be enforced as
 rules.</p>
 
-<h2 id="source-file-basics">2 Source file basics</h2>
+<h2 id="source-file-basics">2 源文件基本要求</h2>
 
-<h3 id="file-name">2.1 File name</h3>
+<h3 id="file-name">2.1 文件名</h3>
 
-<p>File names must be all lowercase and may include underscores (<code>_</code>) or dashes
-(<code>-</code>), but no additional punctuation. Follow the convention that your project
-uses. Filenames&#8217; extension must be <code>.js</code>.</p>
+<p>文件名必须全小写，可以包含下划线 (<code>_</code>) 或者破折号 (<code>-</code>)，不能包含其他标点。</p>
 
-<h3 id="file-encoding">2.2 File encoding: UTF-8</h3>
+<h3 id="file-encoding">2.2 文件编码：UTF-8</h3>
 
-<p>Source files are encoded in <strong>UTF-8</strong>.</p>
+<p>源文件必须使用 <strong>UTF-8</strong> 编码。</p>
 
-<h3 id="special-characters">2.3 Special characters</h3>
+<h3 id="special-characters">2.3 特殊字符</h3>
 
-<h4 id="whitespace-characters">2.3.1 Whitespace characters</h4>
+<h4 id="whitespace-characters">2.3.1 空白字符</h4>
 
-<p>Aside from the line terminator sequence, the ASCII horizontal space character
-(0x20) is the only whitespace character that appears anywhere in a source
-file. This implies that</p>
+<p>除换行符外，只允许使用空格 (ASCII 0x20) 作为空白字符。这意味着：</p>
 
 <ol>
-<li><p>All other whitespace characters in string literals are escaped, and</p></li>
-<li><p>Tab characters are <strong>not</strong> used for indentation.</p></li>
+<li><p>字符串中的所有其他空白字符必须意转义字符的形式出现。</p></li>
+<li><p>禁止使用 tab 进行缩进。</p></li>
 </ol>
 
-<h4 id="special-escape-sequences">2.3.2 Special escape sequences</h4>
+<h4 id="special-escape-sequences">2.3.2 特殊转义序列</h4>
 
-<p>For any character that has a special escape sequence (<code>\'</code>, <code>\"</code>, <code>\\</code>, <code>\b</code>,
-<code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\v</code>), that sequence is used rather than the
-corresponding numeric escape (e.g <code>\x0a</code>, <code>\u000a</code>, or <code>\u{a}</code>). Legacy octal
-escapes are never used.</p>
+<p>对所有有专用文字转义表达方式的转义字符 (<code>\'</code>, <code>\"</code>, <code>\\</code>, <code>\b</code>,
+<code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\v</code>)，只能使用字符转义方式，禁止使用数字转义 (即 <code>\x0a</code>, <code>\u000a</code>, or <code>\u{a}</code>)。禁止使用8进制数字转义。</p>
 
-<h4 id="non-ascii-characters">2.3.3 Non-ASCII characters</h4>
+<h4 id="non-ascii-characters">2.3.3 非 ASCII 字符</h4>
 
-<p>For the remaining non-ASCII characters, either the actual Unicode character
-(e.g. <code>&#8734;</code>) or the equivalent hex or Unicode escape (e.g. <code>\u221e</code>) is used,
-depending only on which makes the code <strong>easier to read and understand</strong>.</p>
+<p>对非 ASCII 字符，要么使用原 Unicode 字符（例如 <code>&#8734;</code> ），要么使用对应的十六进制或者 Unicode 转义 (例如 <code>\u221e</code>)，以使代码易读易理解为选择标准。</p>
+</p>
 
-<p>Tip: In the Unicode escape case, and occasionally even when actual Unicode
-characters are used, an explanatory comment can be very helpful.</p>
+<p class="tip">提示：使用 Unicode 转义，或者直接使用 Unicode 字符时，一段注释说明往往很有帮助。</p>
 
 <table>
   <thead>
     <tr>
-      <th>Example
-      </th><th>Discussion
+      <th>示例
+      </th><th>说明
   </th></tr></thead><tbody>
     <tr>
       <td><code class="prettyprint lang-js">const units = '&#956;s';</code>
-      </td><td>Best: perfectly clear even without a comment.
+      </td><td>很好，即使没有注释含义也很清晰。
     </td></tr><tr>
       <td>
         <code class="prettyprint lang-js">const units = '\u03bcs'; // '&#956;s'
         </code>
-      </td><td>Allowed, but there&#8217;s no reason to do this.
+      </td><td>允许这样写，但没有任何理由这样写。
     </td></tr><tr>
       <td>
         <code class="prettyprint lang-js">const units = '\u03bcs'; // Greek letter mu, 's'
         </code>
-      </td><td>Allowed, but awkward and prone to mistakes.
+      </td><td>允许这样写，但很别扭且容易出错。
     </td></tr><tr>
       <td><code class="badcode">const units = '\u03bcs';</code>
-      </td><td>Poor: the reader has no idea what this is.
+      </td><td>很糟糕，读者无法理解这段代码的含义。
     </td></tr><tr>
       <td>
         <code class="prettyprint lang-js">return '\ufeff' + content;  // byte order mark
         </code>
       </td><td>
-        Good: use escapes for non-printable characters, and comment if
-        necessary.
+        很好，针对无法显示的字符使用转义表示，并且添加了必要的注释。
 </td></tr></tbody></table>
 
-<p>Tip: Never make your code less readable simply out of fear that some programs
-might not handle non-ASCII characters properly. If that happens, those programs
-are <strong>broken</strong> and they must be <strong>fixed</strong>.</p>
+<p class="tip">提示：千万不要仅仅因为担心其他程序无法正确处理非 ASCII 字符而降低代码可读性。如果确实发生无法处理非 ASCII 字符的情况，那么这是该程序的问题，应该去修复程序。</p>
 
-<h2 id="source-file-structure">3 Source file structure</h2>
+<h2 id="source-file-structure">3 源文件结构</h2>
 
-<p>A source file consists of, <strong>in order</strong>:</p>
+<p>一个文件由以下几部分组成：</p>
 
 <ol>
-<li>License or copyright information, if present</li>
-<li><code>@fileoverview</code> JSDoc, if present</li>
-<li><code>goog.module</code> statement</li>
-<li><code>goog.require</code> statements</li>
-<li>The file&#8217;s implementation</li>
+<li>许可证活版权信息，如果有的话</li>
+<li>文件概要信息</li>
+<li>功能代码</li>
 </ol>
 
-<p><strong>Exactly one blank line</strong> separates each section that is present, except the
-file's implementation, which may be preceded by 1 or 2 blank lines.</p>
+<p><strong>每部分之间留一个空行</p>
 
-<h3 id="file-copyright">3.1 License or copyright information, if present</h3>
+<h3 id="file-copyright">3.1 许可证活版权信息，如果有的话</h3>
 
-<p>If license or copyright information belongs in a file, it belongs here.</p>
+<p></p>
 
-<h3 id="file-fileoverview">3.2 <code>@fileoverview</code> JSDoc, if present</h3>
+<h3 id="file-fileoverview">3.2 文件概要信息</h3>
 
-<p>See <a href="#jsdoc-top-file-level-comments">??</a> for formatting rules.</p>
+<p>格式参照 <a href="#jsdoc-top-file-level-comments">??</a>。</p>
 
-<h3 id="file-goog-module">3.3 <code>goog.module</code> statement</h3>
+<h3 id="file-goog-module">3.3 <code>goog.module</code> 声明</h3>
 
-<p>All files must declare exactly one <code>goog.module</code> name on a single line: lines
-containing a <code>goog.module</code> declaration must not be wrapped, and are therefore an
-exception to the 80-column limit.</p>
+<p>所有文件必须包含一个 <code>goog.module</code> 声明。该声明独占一行，不得缩进，不受每行最多80字符的限制。</p>
 
-<p>The entire argument to goog.module is what defines a namespace.  It is the
-package name (an identifier that reflects the fragment of the directory
-structure where the code lives) plus, optionally, the main class/enum/interface
-that it defines concatenated to the end.</p>
-
-<p>Example</p>
+<p>示例</p>
 
 <pre><code class="language-js prettyprint">goog.module('search.urlHistory.UrlHistoryService');
 </code></pre>
 
-<h4 id="naming-hierarchy">3.3.1 Hierarchy</h4>
+<h4 id="naming-hierarchy">3.3.1 层级结构</h4>
 
-<p>Module namespaces may never be named as a <em>direct</em> child of another module's
-namespace.</p>
+<p>模块命名空间之间不允许存在直接父子关系。</p>
 
-<p>Illegal:</p>
+<p>非法:</p>
 
-<pre><code class="language-js prettyprint badcode">goog.module('foo.bar');   // 'foo.bar.qux' would be fine, though
+<pre><code class="language-js prettyprint badcode">goog.module('foo.bar');   // 'foo.bar.qux' 才是合适的命名
 goog.module('foo.bar.baz');
 </code></pre>
 
-<p>The directory hierarchy reflects the namespace hierarchy, so that deeper-nested
-children are subdirectories of higher-level parent directories.  Note that this
-implies that owners of &#8220;parent&#8221; namespace groups are necessarily aware of all
-child namespaces, since they exist in the same directory.</p>
+<p>目录结构应该对应到命名空间结构。这也意味着父命名空间需要知道所有的子命名空间。</p>
 
 <h4 id="file-set-test-only">3.3.2 <code>goog.setTestOnly</code></h4>
 
-<p>The single <code>goog.module</code> statement may optionally be followed by a call to
-goog.setTestOnly().</p>
+<p><code>goog.module</code> 声明后面可以紧跟一个 goog.setTestOnly() 调用</p>
 
 <h4 id="file-declare-legacy-namespace">3.3.3 <code>goog.module.declareLegacyNamespace</code></h4>
 
-<p>The single <code>goog.module</code> statement may optionally be followed by a call to
-<code>goog.module.declareLegacyNamespace();</code>. Avoid
-<code>goog.module.declareLegacyNamespace()</code> when possible.</p>
+<p><code>goog.module</code> 声明后面可以紧跟一个 <code>goog.module.declareLegacyNamespace()</code>调用。尽量减少
+<code>goog.module.declareLegacyNamespace()</code> 的使用</p>
 
-<p>Example:</p>
+<p>示例:</p>
 
 <pre><code class="language-js prettyprint">goog.module('my.test.helpers');
 goog.module.declareLegacyNamespace();
@@ -203,50 +175,29 @@ restrictions. As the child module name must be created after the parent
 namespace, this name <strong>must not</strong> be a child or parent of any other
 <code>goog.module</code> (for example, <code>goog.module('parent');</code> and
 <code>goog.module('parent.child');</code> cannot both exist safely, nor can
-<code>goog.module('parent');</code> and <code>goog.module('parent.child.grandchild');</code>).</p>
+<code>goog.module('parent');</code> and <code>goog.module('parent.child.grandchild')</code>).</p>
 
-<h4 id="file-es6-modules">3.3.4 ES6 Modules</h4>
+<h4 id="file-es6-modules">3.3.4 ES6 模块</h4>
 
-<p>Do not use ES6 modules yet (i.e. the <code>export</code> and <code>import</code> keywords), as their
-semantics are not yet finalized. Note that this policy will be revisited once
-the semantics are fully-standard.</p>
+<p>不要使用 ES6 模块 (即 <code>export</code> 和 <code>import</code> 关键词)，因为其语义尚未最终确定。注意待其语义标准化之后，该规则会重新进行评估。</p>
 
-<h3 id="file-goog-require">3.4 <code>goog.require</code> statements</h3>
+<h3 id="file-goog-require">3.4 <code>goog.require</code> 声明</h3>
 
-<p>Imports are done with <code>goog.require</code> statements, grouped together immediately
-following the module declaration. Each <code>goog.require</code> is assigned to a single
-constant alias, or else destructured into several constant aliases. These
-aliases are the only acceptable way to refer to the <code>require</code>d dependency,
-whether in code or in type annotations: the fully qualified name is never used
-except as the argument to <code>goog.require</code>. Alias names should match the final
-dot-separated component of the imported module name when possible, though
-additional components may be included (with appropriate casing such that the
-alias' casing still correctly identifies its type) if necessary to
-disambiguate, or if it significantly improves readability. <code>goog.require</code>
-statements may not appear anywhere else in the file.</p>
+<p>使用 <code>goog.require</code> 声明导入其他模块，模块导入声明应该作为一组紧跟在模块声明之后。每个 <code>goog.require</code> 被赋值到一个不可变别名上，或者被解构为一组不可变别名。
+在代码和类型注解上都必须通过这些别名引用导入的依赖模块，模块的全限定名仅用于作为 <code>goog.require</code> 的参数。别名应该尽量与导入模块模块名按点分隔的最后部分保持一致，
+当然也可以为了避免歧义、增强可读性也可以调整。<code>goog.require</code>不能在文件其他地方再次使用。
 
-<p>If a module is imported only for its side effects, the assignment may be
-omitted, but the fully qualified name may not appear anywhere else in the file.
-A comment is required to explain why this is needed and suppress a compiler
-warning.</p>
+<p>如果仅为了副作用而导入一个模块，可以不赋值，但该模块的完整限定名不能在文件其他地方出现。同时需要通过注释说明为何需要该模块，并且禁止编译器警告。</p>
 
 
 
-<p>The lines are sorted according to the following rules: All requires with a name
-on the left hand side come first, sorted alphabetically by those names. Then
-destructuring requires, again sorted by the names on the left hand side.
-Finally, any <code>goog.require</code> calls that are standalone (generally these are for
-modules imported just for their side effects).</p>
+<p>模块导入声明排序规则：所有带赋值的声明出现在前面，按照别名字符序排序，解构导入声明也如此。最后是其他独立的 <code>goog.require</code> 调用（通常为了其副作用而导入）。</p>
 
-<p>Tip: There&#8217;s no need to memorize this order and enforce it manually. You can
-rely on your IDE to report requires
-that are not sorted correctly.</p>
+<p class="tip">提示：不需要记住并且手工执行这条规则，可以使用 IDE 进行 require 顺序检测。</p>
 
-<p>If a long alias or module name would cause a line to exceed the 80-column limit,
-it <strong>must not</strong> be wrapped: goog.require lines are an exception to the 80-column
-limit.</p>
+<p>goog.require 代码行禁止换行，可不遵循单行80字符限制。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">const MyClass = goog.require('some.package.MyClass');
 const NsMyClass = goog.require('other.ns.MyClass');
@@ -258,7 +209,7 @@ const {clear, forEach, map} = goog.require('goog.array');
 goog.require('my.framework.initialization');
 </code></pre>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js badcode prettyprint">const randomName = goog.require('something.else'); // name must match
 
