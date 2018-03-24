@@ -132,9 +132,9 @@ rules.</p>
 
 <p>格式参照 <a href="#jsdoc-top-file-level-comments">??</a>。</p>
 
-<h3 id="file-goog-module">3.3 <code>goog.module</code> 声明</h3>
+<h3 id="file-goog-module">3.3 <code>goog.module</code> 语句</h3>
 
-<p>所有文件必须包含一个 <code>goog.module</code> 声明。该声明独占一行，不得缩进，不受每行最多80字符的限制。</p>
+<p>所有文件必须包含一个 <code>goog.module</code> 语句。该语句独占一行，不得缩进，不受每行最多80字符的限制。</p>
 
 <p>示例</p>
 
@@ -155,11 +155,11 @@ goog.module('foo.bar.baz');
 
 <h4 id="file-set-test-only">3.3.2 <code>goog.setTestOnly</code></h4>
 
-<p><code>goog.module</code> 声明后面可以紧跟一个 goog.setTestOnly() 调用</p>
+<p><code>goog.module</code> 语句后面可以紧跟一个 goog.setTestOnly() 调用</p>
 
 <h4 id="file-declare-legacy-namespace">3.3.3 <code>goog.module.declareLegacyNamespace</code></h4>
 
-<p><code>goog.module</code> 声明后面可以紧跟一个 <code>goog.module.declareLegacyNamespace()</code>调用。尽量减少
+<p><code>goog.module</code> 语句后面可以紧跟一个 <code>goog.module.declareLegacyNamespace()</code>调用。尽量减少
 <code>goog.module.declareLegacyNamespace()</code> 的使用</p>
 
 <p>示例:</p>
@@ -181,9 +181,9 @@ namespace, this name <strong>must not</strong> be a child or parent of any other
 
 <p>不要使用 ES6 模块 (即 <code>export</code> 和 <code>import</code> 关键词)，因为其语义尚未最终确定。注意待其语义标准化之后，该规则会重新进行评估。</p>
 
-<h3 id="file-goog-require">3.4 <code>goog.require</code> 声明</h3>
+<h3 id="file-goog-require">3.4 <code>goog.require</code> 语句</h3>
 
-<p>使用 <code>goog.require</code> 声明导入其他模块，模块导入声明应该作为一组紧跟在模块声明之后。每个 <code>goog.require</code> 被赋值到一个不可变别名上，或者被解构为一组不可变别名。
+<p>使用 <code>goog.require</code> 语句导入其他模块，模块导入语句应该作为一组紧跟在模块语句之后。每个 <code>goog.require</code> 被赋值到一个不可变别名上，或者被解构为一组不可变别名。
 在代码和类型注解上都必须通过这些别名引用导入的依赖模块，模块的全限定名仅用于作为 <code>goog.require</code> 的参数。别名应该尽量与导入模块模块名按点分隔的最后部分保持一致，
 当然也可以为了避免歧义、增强可读性也可以调整。<code>goog.require</code>不能在文件其他地方再次使用。
 
@@ -191,7 +191,7 @@ namespace, this name <strong>must not</strong> be a child or parent of any other
 
 
 
-<p>模块导入声明排序规则：所有带赋值的声明出现在前面，按照别名字符序排序，解构导入声明也如此。最后是其他独立的 <code>goog.require</code> 调用（通常为了其副作用而导入）。</p>
+<p>模块导入语句排序规则：所有带赋值的语句出现在前面，按照别名字符序排序，解构导入语句也如此。最后是其他独立的 <code>goog.require</code> 调用（通常为了其副作用而导入）。</p>
 
 <p class="tip">提示：不需要记住并且手工执行这条规则，可以使用 IDE 进行 require 顺序检测。</p>
 
@@ -224,42 +224,30 @@ function someFunction() {
 
 <h4 id="file-goog-forward-declare">3.4.1 <code>goog.forwardDeclare</code></h4>
 
-<p><code>goog.forwardDeclare</code> is not needed very often, but is a valuable tool to break
-circular dependencies or to reference late loaded code. These statements are
-grouped together and immediately follow any <code>goog.require</code> statements. A
-<code>goog.forwardDeclare</code> statement must follow the same style rules as a
-<code>goog.require</code> statement.</p>
+<p><code>goog.forwardDeclare</code> 语句不常用，可用于打破循环依赖或者引用延迟加载代码。此类语句统一放到 <code>goog.require</code> 语句后面，代码规范同<code>goog.require</code> 语句。</p>
 
-<h3 id="file-implementation">3.5 The file&#8217;s implementation</h3>
+<h3 id="file-implementation">3.5 代码实现</h3>
 
-<p>The actual implementation follows after all dependency information is declared
-(separated by at least one blank line).</p>
+<p>代码实现位于依赖声明语句之后，于依赖声明之间至少使用一个空行分隔。</p>
 
-<p>This may consist of any module-local declarations (constants, variables,
-classes, functions, etc), as well as any exported symbols.
-</p>
+<p>这部分可能包含任何模块局部声明（例如常量，变量，类，函数等），以及任何导出符号。</p>
 
-<h2 id="formatting">4 Formatting</h2>
+<h2 id="formatting">4 格式</h2>
 
-<p><strong>Terminology Note</strong>: <em>block-like construct</em> refers to the body of a class,
-function, method, or brace-delimited block of code.  Note that, by
+<p><strong>术语说明</strong>: <em>块结构</em>是指类、函数、方法或者大括号包含的代码块。Note that, by
 <a href="#features-array-literals">??</a> and <a href="#features-object-literals">??</a>, any array or
 object literal may optionally be treated as if it were a block-like construct.</p>
 
-<p>Tip: Use <code>clang-format</code>. The JavaScript community has invested effort to make
-sure clang-format <q>does the right thing</q> on JavaScript files. <code>clang-format</code> has
-integration with several popular
-editors.</p>
+<p class="tip">提醒：推荐使用 <code>clang-format</code>。Javascript社区投入很大努力使得 clang-format 可以应用于 Javascript 文件。<code>clang-format</code> 支持多种流行编辑器。</p>
 
-<h3 id="formatting-braces">4.1 Braces</h3>
+<h3 id="formatting-braces">4.1 大括号</h3>
 
-<h4 id="formatting-braces-all">4.1.1 Braces are used for all control structures</h4>
+<h4 id="formatting-braces-all">4.1.1 对所有控制结构使用大括号</h4>
 
-<p>Braces are required for all control structures (i.e. <code>if</code>, <code>else</code>, <code>for</code>, <code>do</code>,
-<code>while</code>, as well as any others), even if the body contains only a single
-statement.  The first statement of a non-empty block must begin on its own line.</p>
+<p>对所有的控制结构使用大括号（例如 <code>if</code>, <code>else</code>, <code>for</code>, <code>do</code>,
+<code>while</code>，等等），即便其中只有一行代码。非空代码块的第一行必须以新行开始。</p>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js badcode prettyprint">if (someVeryLongCondition())
   doSomething();
@@ -267,30 +255,24 @@ statement.  The first statement of a non-empty block must begin on its own line.
 for (let i = 0; i &lt; foo.length; i++) bar(foo[i]);
 </code></pre>
 
-<p><strong>Exception</strong>: A simple if statement that can fit entirely on a single line with
-no wrapping (and that doesn&#8217;t have an else) may be kept on a single line with no
-braces when it improves readability.  This is the only case in which a control
-structure may omit braces and newlines.</p>
+<p><strong>例外</strong>：如果一个简单的 if 语句能够放在一行内不需要换行，且没有 else 子句，那么为了增强可读性，允许将其放在一行并且不使用大括号。这是唯一一种可以在控制结构中捕食用大括号和换行的情况。</p>
 
 <pre><code class="language-js prettyprint">if (shortCondition()) return;
 </code></pre>
 
-<h4 id="formatting-nonempty-blocks">4.1.2 Nonempty blocks: K&amp;R style</h4>
+<h4 id="formatting-nonempty-blocks">4.1.2 非空代码块：K&amp;R 风格</h4>
 
-<p>Braces follow the Kernighan and Ritchie style (<q><a href="http://www.codinghorror.com/blog/2012/07/new-programming-jargon.html">Egyptian brackets</a></q>) for
-<em>nonempty</em> blocks and block-like constructs:</p>
+<p>所有非空代码块和块结构都需要遵循 Kernighan and Ritchie 风格 (<q><a href="http://www.codinghorror.com/blog/2012/07/new-programming-jargon.html">Egyptian brackets</a></q>)：</p>
 
 <ul>
-<li>No line break before the opening brace.</li>
-<li>Line break after the opening brace.</li>
-<li>Line break before the closing brace.</li>
-<li>Line break after the closing brace <em>if</em> that brace terminates a statement or
-the body of a function or class statement, or a class method. Specifically,
-there is <em>no</em> line break after the brace if it is followed by <code>else</code>, <code>catch</code>,
-<code>while</code>, or a comma, semicolon, or right-parenthesis.</li>
+<li>左大括号前不换行。</li>
+<li>左大括号后换行。</li>
+<li>右大括号前换行。</li>
+<li>如果右大括号标志着一个语句、函数体、类声明、类函数的结束，那么右大括号之后换行。也有例外情况，如果大括号后跟
+  <code>else</code>, <code>catch</code>, <code>while</code>，或者逗号、分号、右小括号，那么大括号后不需要换行。</li>
 </ul>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">class InnerClass {
   constructor() {}
@@ -309,19 +291,16 @@ there is <em>no</em> line break after the brace if it is followed by <code>else<
 }
 </code></pre>
 
-<h4 id="formatting-empty-blocks">4.1.3 Empty blocks: may be concise</h4>
+<h4 id="formatting-empty-blocks">4.1.3 空代码块可以简化</h4>
 
-<p>An empty block or block-like construct <em>may</em> be closed immediately after it is
-opened, with no characters, space, or line break in between (i.e. <code>{}</code>),
-<strong>unless</strong> it is a part of a <em>multi-block statement</em> (one that directly contains
-multiple blocks: <code>if</code>/<code>else</code> or <code>try</code>/<code>catch</code>/<code>finally</code>).</p>
+<p>空代码块或块结构可以简写为 <code>{}</code>，如果其不是一个多代码块语句的一部分（例如 <code>if</code>/<code>else</code> 或者 <code>try</code>/<code>catch</code>/<code>finally</code>）。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">function doNothing() {}
 </code></pre>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">if (condition) {
   // &#8230;
@@ -334,18 +313,13 @@ try {
 } catch (e) {}
 </code></pre>
 
-<h3 id="formatting-block-indentation">4.2 Block indentation: +2 spaces</h3>
+<h3 id="formatting-block-indentation">4.2 使用两个空格缩进代码块</h3>
 
-<p>Each time a new block or block-like construct is opened, the indent increases by
-two spaces. When the block ends, the indent returns to the previous indent
-level. The indent level applies to both code and comments throughout the
-block. (See the example in <a href="#formatting-nonempty-blocks">??</a>).</p>
+<p>每当产生一个新的代码块或块结构时，代码缩进增加两个空格。代码块结束时，缩进减少两个空格。缩进规则适用于代码和注释。示例参见 <a href="#formatting-nonempty-blocks">??</a>。</p>
 
-<h4 id="formatting-array-literals">4.2.1 Array literals: optionally <q>block-like</q></h4>
+<h4 id="formatting-array-literals">4.2.1 数组字面量：可以使用类块风格</h4>
 
-<p>Any array literal may optionally be formatted as if it were a &#8220;block-like
-construct.&#8221; For example, the following are all valid (<strong>not</strong> an exhaustive
-list):</p>
+<p>数组字面量可以采用块结构的格式进行格式化。例如以下形式都是合法的（未列出所有情况）：</p>
 
 <pre><code class="language-js prettyprint columns">const a = [
   0,
@@ -365,19 +339,15 @@ someMethod(foo, [
 ], bar);
 </code></pre>
 
-<p>Other combinations are allowed, particularly when emphasizing semantic groupings
-between elements, but should not be used only to reduce the vertical size of
-larger arrays.</p>
+<p>也可以采用其他形式，例如出于强调元素的语义分类的目的，但不应该仅为了减少大数组所占的代码行。</p>
 
-<h4 id="formatting-object-literals">4.2.2 Object literals: optionally <q>block-like</q></h4>
+<h4 id="formatting-object-literals">4.2.2 对象字面量：可以使用类块风格</h4>
 
-<p>Any object literal may optionally be formatted as if it were a &#8220;block-like
-construct.&#8221; The same examples apply as <a href="#formatting-array-literals">??</a>. For
-example, the following are all valid (<strong>not</strong> an exhaustive list):</p>
+<p>对象字面量可以采用块结构的格式进行格式化。例如以下形式都是合法的（未列出所有情况）：</p>
 
 <pre><code class="language-js prettyprint columns">const a = {
-  a: 0,
-  b: 1,
+    a: 0,
+    b: 1,
 };
 
 const b =
@@ -391,15 +361,11 @@ someMethod(foo, {
 }, bar);
 </code></pre>
 
-<h4 id="formatting-class-literals">4.2.3 Class literals</h4>
+<h4 id="formatting-class-literals">4.2.3 类字面量</h4>
 
-<p>Class literals (whether declarations or expressions) are indented as blocks. Do
-not add semicolons after methods, or after the closing brace of a class
-<em>declaration</em> (statements&#8212;such as assignments&#8212;that contain class <em>expressions</em>
-are still terminated with a semicolon). Use the <code>extends</code> keyword, but not the
-<code>@extends</code> JSDoc annotation unless the class extends a templatized type.</p>
+<p>类字面量（无论是声明还是表达式）参照代码块进行缩进。不要在方法或者声明后添加分号(包含类声明的语句仍要以分号结尾，例如赋值语句)。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint columns">class Foo {
   constructor() {
@@ -430,13 +396,11 @@ class Frobnicator {
 }
 </code></pre>
 
-<h4 id="formatting-function-expressions">4.2.4 Function expressions</h4>
+<h4 id="formatting-function-expressions">4.2.4 函数表达式</h4>
 
-<p>When declaring an anonymous function in the list of arguments for a function
-call, the body of the function is indented two spaces more than the preceding
-indentation depth.</p>
+<p>函数调用语句的参数中包含匿名函数时，函数体缩进两个空格。</p>
 
-<p>Example:</p>
+<p>例子：</p>
 
 <pre><code class="language-js prettyprint">prefix.something.reallyLongFunctionName('whatever', (a1, a2) =&gt; {
   // Indent the function body +2 relative to indentation depth
@@ -459,20 +423,15 @@ some.reallyLongFunctionCall(arg1, arg2, arg3)
     });
 </code></pre>
 
-<h4 id="formatting-switch-statements">4.2.5 Switch statements</h4>
+<h4 id="formatting-switch-statements">4.2.5 Switch 语句</h4>
 
-<p>As with any other block, the contents of a switch block are indented +2.</p>
+<p>switch 代码块缩进两个空格。</p>
 
+<p>每个 case 标签之后换行，对应标签的处理代码参照块结构进行缩进，如果需要块级作用域可以使用大括号包括处理代码。</p>
 
+<p>break 语句和下一个 case 语句之间可以留一个空行（可选）</p>
 
-<p>After a switch label, a newline appears, and the indentation level is increased
-+2, exactly as if a block were being opened. An explicit block may be used if
-required by lexical scoping. The following switch label returns to the previous
-indentation level, as if a block had been closed.</p>
-
-<p>A blank line is optional between a <code>break</code> and the following case.</p>
-
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">switch (animal) {
   case Animal.BANDERSNATCH:
@@ -488,172 +447,129 @@ indentation level, as if a block had been closed.</p>
 }
 </code></pre>
 
-<h3 id="formatting-statements">4.3 Statements</h3>
+<h3 id="formatting-statements">4.3 语句</h3>
 
-<h4 id="formatting-one-statement-perline">4.3.1 One statement per line</h4>
+<h4 id="formatting-one-statement-perline">4.3.1 每行一条语句</h4>
 
-<p>Each statement is followed by a line-break.</p>
+<p>每条语句之后都应该换行。</p>
 
-<h4 id="formatting-semicolons-are-required">4.3.2 Semicolons are required</h4>
+<h4 id="formatting-semicolons-are-required">4.3.2 必须使用分号</h4>
 
-<p>Every statement must be terminated with a semicolon. Relying on automatic
-semicolon insertion is forbidden.</p>
+<p>每条语句应该以分号结尾，禁止依赖自动添加分号的功能。</p>
 
-<h3 id="formatting-column-limit">4.4 Column limit: 80</h3>
+<h3 id="formatting-column-limit">4.4 单行不超过80字符</h3>
 
-<p>JavaScript code has a column limit of 80 characters. Except as noted below, any
-line that would exceed this limit must be line-wrapped, as explained in
-<a href="#formatting-line-wrapping">??</a>.</p>
+<p>一般情况下，单行 JavaScript 代码不得超过80字符，如果超出则断行，参考<a href="#formatting-line-wrapping">??</a>。</p>
 
-<p><strong>Exceptions:</strong></p>
+<p><strong>例外情况：</strong></p>
 
 <ol>
-<li>Lines where obeying the column limit is not possible (for example, a long URL
-in JSDoc or a shell command intended to be copied-and-pasted).</li>
-<li><code>goog.module</code> and <code>goog.require</code> statements (see <a href="#file-goog-module">??</a> and
-<a href="#file-goog-require">??</a>).</li>
+<li>不可能遵守字符限制的情况，例如一个很长的 URL 字符串。</li>
+<li><code>goog.module</code> 以及 <code>goog.require</code> 语句（<a href="#file-goog-module">??</a> 以及
+<a href="#file-goog-require">??</a>)）。/li>
 </ol>
 
-<h3 id="formatting-line-wrapping">4.5 Line-wrapping</h3>
+<h3 id="formatting-line-wrapping">4.5 断行</h3>
 
-<p><strong>Terminology Note</strong>: <em>Line-wrapping</em> is defined as breaking a single expression
-into multiple lines.</p>
+<p><strong>术语说明</strong>：<em>断行</em>是指将一个表达式拆分为多行。</p>
 
-<p>There is no comprehensive, deterministic formula showing <em>exactly</em> how to
-line-wrap in every situation. Very often there are several valid ways to
-line-wrap the same piece of code.</p>
+<p>没有完备的，确切的的方法告诉你在各种情况下如何断行。同一段代码往往有多种断行方式。</p>
 
-<p>Note: While the typical reason for line-wrapping is to avoid overflowing the
-column limit, even code that would in fact fit within the column limit may be
-line-wrapped at the author's discretion.</p>
+<p>注意：尽管断行一般是为了不超出单行字符数的限制，但开发人员也可以出于其他原因自行决定断行。</p>
 
-<p>Tip: Extracting a method or local variable may solve the problem without the
-need to line-wrap.</p>
+<p>提示：可以通过将部分内容提取为一个函数或据不变量的方法来避免断行。</p>
 
-<h4 id="formatting-where-to-break">4.5.1 Where to break</h4>
+<h4 id="formatting-where-to-break">4.5.1 从何处断行</h4>
 
-<p>The prime directive of line-wrapping is: prefer to break at a <strong>higher syntactic
-level</strong>. </p>
+<p>原则上尽量依照高层语义进行断行。</strong>. </p>
 
-<p>Preferred:</p>
+<p>推荐方案：</p>
 
 <pre><code class="language-js prettyprint">currentEstimate =
     calc(currentEstimate + x * currentEstimate) /
         2.0f;
 </code></pre>
 
-<p>Discouraged:</p>
+<p>不推荐：</p>
 
 <pre><code class="language-js prettyprint badcode">currentEstimate = calc(currentEstimate + x *
     currentEstimate) / 2.0f;
 </code></pre>
 
-<p>In the preceding example, the syntactic levels from highest to lowest are as
-follows: assignment, division, function call, parameters, number constant.</p>
+<p>上例中，语义从高到低依次是赋值、除法、函数调用、参数、数字常量。</p>
 
-<p>Operators are wrapped as follows:</p>
+<p>操作符断行规则：</p>
 
 <ol>
-<li>When a line is broken at an operator the break comes after the symbol. (Note
-that this is not the same practice used in Google style for Java.)
+<li>在操作符之后断行
 <ol>
-<li>This does not apply to the <q>dot</q> (<code>.</code>), which is not actually an
-operator.</li>
+<li>该规则不适用于 <q>点</q> (<code>.</code>)，点本身不是操作符。</li>
 </ol></li>
-<li>A method or constructor name stays attached to the open parenthesis (<code>(</code>)
-that follows it.</li>
-<li>A comma (<code>,</code>) stays attached to the token that precedes it.</li>
+<li>函数或者构造函数名名与其左括号（<code>(</code>）写在一起。</li>
+<li>逗号（<code>,</code>）前不断行。</li>
 </ol>
 
 <blockquote>
-<p>Note: The primary goal for line wrapping is to have clear code, not
+<p>注意：断行的主要目的是使代码清晰易读。The primary goal for line wrapping is to have clear code, not
 necessarily code that fits in the smallest number of lines.</p>
 </blockquote>
 
-<h4 id="formatting-indent">4.5.2 Indent continuation lines at least +4 spaces</h4>
+<h4 id="formatting-indent">4.5.2 延续行缩进至少四个空格</h4>
 
-<p>When line-wrapping, each line after the first (each <em>continuation line</em>) is
-indented at least +4 from the original line, unless it falls under the rules of
+<p>发生断行时，除第一行的其他行（所谓延续行）相对于第一行至少缩进四个空格，unless it falls under the rules of
 block indentation.</p>
 
-<p>When there are multiple continuation lines, indentation may be varied beyond +4
-as appropriate.  In general, continuation lines at a deeper syntactic level are
-indented by larger multiples of 4, and two lines use the same indentation level
-if and only if they begin with syntactically parallel elements.</p>
+<p>右多个延续行时，每行的缩进可能不同。一般来说，较深语义层次的代码行缩进更多，缩进量都是4的整倍数。两行缩进相同当且仅当他们的语义层次相同。</p>
 
-<p><a href="#formatting-horizontal-alignment">??</a> addresses the discouraged practice of
-using a variable number of spaces to align certain tokens with previous lines.</p>
+<p><a href="#formatting-horizontal-alignment">??</a> 描述了通过使用不同个数的空格来对齐上下行的特定词句的情况，这是不推荐的。</p>
 
-<h3 id="formatting-whitespace">4.6 Whitespace</h3>
+<h3 id="formatting-whitespace">4.6 空白</h3>
 
-<h4 id="formatting-vertical-whitespace">4.6.1 Vertical whitespace</h4>
+<h4 id="formatting-vertical-whitespace">4.6.1 空行</h4>
 
-<p>A single blank line appears:</p>
+<p>单个空行在以下情况下出现：</p>
 
 <ol>
-<li>Between consecutive methods in a class or object literal
+<li>在类或对象直接量的连续两个函数定义之间。
 <ol>
-<li>Exception: A blank line between two consecutive properties definitions in
-an object literal (with no other code between them) is optional. Such
-blank lines are used as needed to create <em>logical groupings</em> of fields.</li>
+<li>例外：对象直接量的两个连续属性定义之间的空行是可选的，这种空行常用于字段分组。</li>
 </ol></li>
-<li>Within method bodies, sparingly to create <em>logical groupings</em> of statements.
-Blank lines at the start or end of a function body are not allowed.</li>
-<li><em>Optionally</em> before the first or after the last method in a class or object
-literal (neither encouraged nor discouraged).</li>
-<li>As required by other sections of this document (e.g.
-<a href="#file-goog-require">??</a>).</li>
+<li>空行可以用于在函数内部划分逻辑块，蛋不允许以空行开始或结尾。</li>
+<li>类、对象直接量的第一个函数之前或者最后一个函数之后可以有一个空行（不推荐，也不反对）。</li>
+<li>文档中列举的其他情况（例如<a href="#file-goog-require">??</a>）。</li>
 </ol>
 
-<p><em>Multiple</em> consecutive blank lines are permitted, but never required (nor
-encouraged).</p>
+<p>多个连续空行也是允许的，但不要求，也不反对。</p>
 
-<h4 id="formatting-horizontal-whitespace">4.6.2 Horizontal whitespace</h4>
+<h4 id="formatting-horizontal-whitespace">4.6.2 行内空白</h4>
 
-<p>Use of horizontal whitespace depends on location, and falls into three broad
-categories: <em>leading</em> (at the start of a line), <em>trailing</em> (at the end of a
-line), and <em>internal</em>.  Leading whitespace (i.e., indentation) is addressed
-elsewhere.  Trailing whitespace is forbidden.</p>
+<p>行内空格的使用可以分为三种情况：行首、行尾、行内。行首空白（也就是缩进）其他章节已讲过，行为空白是不允许的。</p>
 
-<p>Beyond where required by the language or other style rules, and apart from
-literals, comments, and JSDoc, a single internal ASCII space also appears in the
-following places <strong>only</strong>.</p>
+<p>除了语言本身要求或其他规范要求，以及直接量、注释、JSDoc之外，空白字符<em>仅</em>在以下情况下使用：</p>
 
 <ol>
-<li>Separating any reserved word (such as <code>if</code>, <code>for</code>, or <code>catch</code>) from an open
-parenthesis (<code>(</code>) that follows it on that line.</li>
-<li>Separating any reserved word (such as <code>else</code> or <code>catch</code>) from a closing
-curly brace (<code>}</code>) that precedes it on that line.</li>
-<li>Before any open curly brace (<code>{</code>), with two exceptions:
+<li>分隔保留字（例如 <code>if</code>, <code>for</code>, <code>catch</code>）和之后的左括号（<code>(</code>）。</li>
+<li>分隔保留字（例如 <code>else</code>, <code>catch</code>）和之前的右大括号（<code>}</code>）。</li>
+<li>用于所有左大括号（<code>{</code>）之前，除以下例外情况：
 <ol>
-<li>Before an object literal that is the first argument of a function or the
-first element in an array literal (e.g. <code>foo({a: [{c: d}]})</code>).</li>
-<li>In a template expansion, as it is forbidden by the language
-(e.g. <code>abc${1 + 2}def</code>).</li>
+<li>当一个对象直接量作为函数的第一个参数或者数组直接量的第一个元素时（例如 <code>foo({a: [{c: d}]})</code> ），在对象直接量之前添加空格。</li>
+<li>在模板扩展代码中，因为模板语法不允许（例如 <code>abc${1 + 2}def</code> ）。</li>
 </ol></li>
-<li>On both sides of any binary or ternary operator.</li>
-<li>After a comma (<code>,</code>) or semicolon (<code>;</code>). Note that spaces are <em>never</em> allowed
-before these characters.</li>
-<li>After the colon (<code>:</code>) in an object literal.</li>
-<li>On both sides of the double slash (<code>//</code>) that begins an end-of-line
-comment. Here, multiple spaces are allowed, but not required.</li>
-<li>After an open-JSDoc comment character and on both sides of close characters
-(e.g. for short-form type declarations or casts: <code>this.foo = /** @type
-{number} */ (bar);</code> or <code>function(/** string */ foo) {</code>).</li>
+<li>在二元或者三元操作符前后。</li>
+<li>在逗号（<code>,</code>）或分号（<code>;</code>）之后。注意这些符号前不允许有空格。</li>
+<li>对象字面量的冒号（<code>:</code>）之后。</li>
+<li>在双斜线（<code>//</code>，行内注释）前后。此处也可以使用多个空格。</li>
+<li>在 JSDoc 起始注释字符之后，以及结束字符前后（例如简短的类型声明或者赋值： <code>this.foo = /** @type
+{number} */ (bar);</code> or <code>function(/** string */ foo) {</code>）。</li>
 </ol>
 
-<h4 id="formatting-horizontal-alignment">4.6.3 Horizontal alignment: discouraged</h4>
+<h4 id="formatting-horizontal-alignment">4.6.3 不建议水平对齐</h4>
 
-<p><strong>Terminology Note</strong>: <em>Horizontal alignment</em> is the practice of adding a
-variable number of additional spaces in your code with the goal of making
-certain tokens appear directly below certain other tokens on previous lines.</p>
+<p><strong>术语说明</strong>: <em>水平对齐</em>是指通过在代码中添加不同数量的空格，使得前后代码行中的特定词语纵向对齐。</p>
 
-<p>This practice is permitted, but it is <strong>generally discouraged</strong> by Google
-Style. It is not even required to <em>maintain</em> horizontal alignment in places
-where it was already used.</p>
+<p>允许这种做法，但并不推荐。</p>
 
-<p>Here is an example without alignment, followed by one with alignment.  Both are
-allowed, but the latter is discouraged:</p>
+<p>下面一个是不对齐的例子，一个对齐的示例。两者都允许，但不推荐后者。</p>
 
 <pre><code class="language-js prettyprint">{
   tiny: 42, // this is great
@@ -666,18 +582,11 @@ allowed, but the latter is discouraged:</p>
 };
 </code></pre>
 
-<p>Tip: Alignment can aid readability, but it creates problems for future
-maintenance. Consider a future change that needs to touch just one line. This
-change may leave the formerly-pleasing formatting mangled, and that is
-allowed. More often it prompts the coder (perhaps you) to adjust whitespace on
-nearby lines as well, possibly triggering a cascading series of
-reformattings. That one-line change now has a <q>blast radius.</q> This can at worst
-result in pointless busywork, but at best it still corrupts version history
-information, slows down reviewers and exacerbates merge conflicts.</p>
+<p>注意：对齐有助于可读性，但不利于后续维护。考虑一个后续的修改只涉及其中一行，但为了代码对齐可能需要修改很多行代码格式。最坏情况下这可能导致无意义的忙碌，最好情况下也会破坏版本信息，降低代码 review 和代码冲突处理效率。</p>
 
-<h4 id="formatting-function-arguments">4.6.4 Function arguments</h4>
+<h4 id="formatting-function-arguments">4.6.4 函数参数</h4>
 
-<p>Prefer to put all function arguments on the same line as the function name. If doing so would exceed the 80-column limit, the arguments must be line-wrapped in a readable way. To save space, you may wrap as close to 80 as possible, or put each argument on its own line to enhance readability. Indentation should be four spaces. Aligning to the parenthesis is allowed, but discouraged. Below are the most common patterns for argument wrapping:</p>
+<p>推荐将函数参数与函数名写在同一行。如果超出单行字符限制断行时，必须考虑可读性。可以尽量在80字符处断行以节约空间，也可以每个参数一行增强可读性。应该缩进四个空格。也可以按照括号对齐，但不推荐这种做法。下面是常用的参数断行方式：</p>
 
 <pre><code class="language-js prettyprint">// Arguments start on a new line, indented four spaces. Preferred when the
 // arguments don't fit on the same line with the function name (or the keyword
@@ -706,32 +615,21 @@ doSomething(
 }
 </code></pre>
 
-<h3 id="formatting-grouping-parentheses">4.7 Grouping parentheses: recommended</h3>
+<h3 id="formatting-grouping-parentheses">4.7 推荐使用括号进行分组</h3>
 
-<p>Optional grouping parentheses are omitted only when the author and reviewer
-agree that there is no reasonable chance that the code will be misinterpreted
-without them, nor would they have made the code easier to read. It is <em>not</em>
-reasonable to assume that every reader has the entire operator precedence table
-memorized.</p>
+<p>使用括号在表达式中进行分组时有益的。除非开发人员和评审人员都认为没有括号不会导致任何误解，对代码可读性也没有帮助，否则建议使用括号。不可能所有开发人员都牢记所有运算符优先级。</p>
 
-<p>Do not use unnecessary parentheses around the entire expression following
-<code>delete</code>, <code>typeof</code>, <code>void</code>, <code>return</code>, <code>throw</code>, <code>case</code>, <code>in</code>, <code>of</code>, or <code>yield</code>.</p>
+<p>不要用括号把<code>delete</code>，<code>typeof</code>，<code>void</code>，<code>return</code>，<code>throw</code>，<code>case</code>，<code>in</code>，<code>of</code>，或者 <code>yield</code> 之后的表达式整个包括起来，这完全没必要。</p>
 
-<p>Parentheses are required for type casts: <code>/** @type {!Foo} */ (foo)</code>.</p>
+<p>类型转换必须使用括号：<code>/** @type {!Foo} */ (foo)</code>。</p>
 
-<h3 id="formatting-comments">4.8 Comments</h3>
+<h3 id="formatting-comments">4.8 注释</h3>
 
-<p>This section addresses <em>implementation comments</em>. JSDoc is addressed separately
-in <a href="#jsdoc">??</a>.</p>
+<h4 id="formatting-block-comment-style">4.8.1 注释</h4>
 
-<h4 id="formatting-block-comment-style">4.8.1 Block comment style</h4>
-
-<p>Block comments are indented at the same level as the surrounding code. They may
-be in <code>/* &#8230; */</code> or <code>//</code>-style. For multi-line <code>/* &#8230; */</code> comments, subsequent
-lines must start with * aligned with the <code>*</code> on the previous line, to make
-comments obvious with no extra context.  &#8220;Parameter name&#8221; comments should appear
-after values whenever the value and method name do not sufficiently convey the
-meaning.</p>
+<p>注释与同级代码缩进保持一致，可以是 <code>/* &#8230; */</code> 或者 <code>//</code> 的形式。
+  多行注释 <code>/* &#8230; */</code>，除第一行之外必须以 * 开头，且与第一行的 * 对齐。
+  如果函数调用中函数名和参数值含义不明确，可以在参数值之后补充注释。</p>
 
 <pre><code class="language-js prettyprint">/*
  * This is
@@ -746,9 +644,9 @@ meaning.</p>
 someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
 </code></pre>
 
-<p>Comments are not enclosed in boxes drawn with asterisks or other characters.</p>
+<p>注释不要包括在星号或者其他字符绘制的框中。</p>
 
-<p>Do not use JSDoc (<code>/** &#8230; */</code>) for any of the above implementation comments.</p>
+<p>在实现注释中不要使用文档注释 JSDoc (<code>/** &#8230; */</code>).</p>
 
 <h2 id="language-features">5 Language features</h2>
 
