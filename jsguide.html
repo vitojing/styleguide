@@ -648,37 +648,29 @@ someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
 
 <p>在实现注释中不要使用文档注释 JSDoc (<code>/** &#8230; */</code>).</p>
 
-<h2 id="language-features">5 Language features</h2>
+<h2 id="language-features">5 语言特性</h2>
 
-<p>JavaScript includes many dubious (and even dangerous) features.  This section
-delineates which features may or may not be used, and any additional constraints
-on their use.</p>
+<p>JavaScript 有许多有风险的，甚至危险的特性。本节描述了哪些特性可以使用，那些不推荐使用，以及相关的使用限制。</p>
 
-<h3 id="features-local-variable-declarations">5.1 Local variable declarations</h3>
+<h3 id="features-local-variable-declarations">5.1 局部变量声明</h3>
 
-<h4 id="features-use-const-and-let">5.1.1 Use <code>const</code> and <code>let</code></h4>
+<h4 id="features-use-const-and-let">5.1.1 使用 <code>const</code> 以及 <code>let</code></h4>
 
-<p>Declare all local variables with either <code>const</code> or <code>let</code>. Use const by default,
-unless a variable needs to be reassigned. The <code class="badcode">var</code>
-keyword must not be used.</p>
+<p>使用 <code>const</code> 或者 <code>let</code> 声明所有的局部变量。默认使用 <code>const</code>，除非变量会被再次赋值。禁止使用 <code>var</code>。</p>
 
-<h4 id="features-one-variable-per-declaration">5.1.2 One variable per declaration</h4>
+<h4 id="features-one-variable-per-declaration">5.1.2 每个声明仅含一个变量</h4>
 
-<p>Every local variable declaration declares only one variable: declarations such
-as <code class="badcode">let a = 1, b = 2;</code> are not used.</p>
+<p>每个局部变量声明仅包含一个变量，不允许类似 <code class="badcode">let a = 1, b = 2;</code> 的用法。</p>
 
-<h4 id="features-declared-when-needed">5.1.3 Declared when needed, initialized as soon as possible</h4>
+<h4 id="features-declared-when-needed">5.1.3 按需声明，尽快初始化</h4>
 
-<p>Local variables are <strong>not</strong> habitually declared at the start of their containing
-block or block-like construct. Instead, local variables are declared close to
-the point they are first used (within reason), to minimize their scope.</p>
+<p>无需将局部变量声明统一写在代码块块起始位置，而应该在初次使用时声明，以使其作用范围最小化。</p>
 
-<h4 id="features-declare-types-as-needed">5.1.4 Declare types as needed</h4>
+<h4 id="features-declare-types-as-needed">5.1.4 按需声明类型</h4>
 
-<p>JSDoc type annotations may be added either on the line above the declaration, or
-else inline before the variable name.</p>
+<p>JSDoc 类型注释可以写在类型声明上一行，也可以在行内，写在变量名之前。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">const /** !Array&lt;number&gt; */ data = [];
 
@@ -686,21 +678,14 @@ else inline before the variable name.</p>
 const data = [];
 </code></pre>
 
-<p>Tip: There are many cases where the compiler can infer a templatized type but
-not its parameters.  This is particularly the case when the initializing literal
-or constructor call does not include any values of the template parameter type
-(e.g., empty arrays, objects, <code>Map</code>s, or <code>Set</code>s), or if the variable is modified
-in a closure.  Local variable type annotations are particularly helpful in these
-cases since otherwise the compiler will infer the template parameter as unknown.</p>
+<p>提示：: 许多情况下编译器可以推断模板类型，但无法推断其参数类型，例如初始化直接量或者初始化函数不包含任何模板参数类型信息时（例如空数组，对象，<code>Map</code>，<code>Set</code>）。
+这种情况下变量类型注释会很有用。</p>
 
-<h3 id="features-array-literals">5.2 Array literals</h3>
+<h3 id="features-array-literals">5.2 数组直接量</h3>
 
-<h4 id="features-arrays-trailing-comma">5.2.1 Use trailing commas</h4>
+<h4 id="features-arrays-trailing-comma">5.2.1 尾元素后使用逗号</h4>
 
-
-
-<p>Include a trailing comma whenever there is a line break between the final
-element and the closing bracket.</p>
+<p>最后一个元素与结尾中括号，</p>
 
 <p>Example:</p>
 
