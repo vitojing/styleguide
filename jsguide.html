@@ -530,12 +530,12 @@ block indentation.</p>
 <p>单个空行在以下情况下出现：</p>
 
 <ol>
-<li>在类或对象直接量的连续两个函数定义之间。
+<li>在类或对象字面量的连续两个函数定义之间。
 <ol>
-<li>例外：对象直接量的两个连续属性定义之间的空行是可选的，这种空行常用于字段分组。</li>
+<li>例外：对象字面量的两个连续属性定义之间的空行是可选的，这种空行常用于字段分组。</li>
 </ol></li>
 <li>空行可以用于在函数内部划分逻辑块，蛋不允许以空行开始或结尾。</li>
-<li>类、对象直接量的第一个函数之前或者最后一个函数之后可以有一个空行（不推荐，也不反对）。</li>
+<li>类、对象字面量的第一个函数之前或者最后一个函数之后可以有一个空行（不推荐，也不反对）。</li>
 <li>文档中列举的其他情况（例如<a href="#file-goog-require">??</a>）。</li>
 </ol>
 
@@ -545,14 +545,14 @@ block indentation.</p>
 
 <p>行内空格的使用可以分为三种情况：行首、行尾、行内。行首空白（也就是缩进）其他章节已讲过，行为空白是不允许的。</p>
 
-<p>除了语言本身要求或其他规范要求，以及直接量、注释、JSDoc之外，空白字符<em>仅</em>在以下情况下使用：</p>
+<p>除了语言本身要求或其他规范要求，以及字面量、注释、JSDoc之外，空白字符<em>仅</em>在以下情况下使用：</p>
 
 <ol>
 <li>分隔保留字（例如 <code>if</code>, <code>for</code>, <code>catch</code>）和之后的左括号（<code>(</code>）。</li>
 <li>分隔保留字（例如 <code>else</code>, <code>catch</code>）和之前的右大括号（<code>}</code>）。</li>
 <li>用于所有左大括号（<code>{</code>）之前，除以下例外情况：
 <ol>
-<li>当一个对象直接量作为函数的第一个参数或者数组直接量的第一个元素时（例如 <code>foo({a: [{c: d}]})</code> ），在对象直接量之前添加空格。</li>
+<li>当一个对象字面量作为函数的第一个参数或者数组字面量的第一个元素时（例如 <code>foo({a: [{c: d}]})</code> ），在对象字面量之前添加空格。</li>
 <li>在模板扩展代码中，因为模板语法不允许（例如 <code>abc${1 + 2}def</code> ）。</li>
 </ol></li>
 <li>在二元或者三元操作符前后。</li>
@@ -678,16 +678,16 @@ someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
 const data = [];
 </code></pre>
 
-<p>提示：: 许多情况下编译器可以推断模板类型，但无法推断其参数类型，例如初始化直接量或者初始化函数不包含任何模板参数类型信息时（例如空数组，对象，<code>Map</code>，<code>Set</code>）。
+<p>提示：: 许多情况下编译器可以推断模板类型，但无法推断其参数类型，例如初始化字面量或者初始化函数不包含任何模板参数类型信息时（例如空数组，对象，<code>Map</code>，<code>Set</code>）。
 这种情况下变量类型注释会很有用。</p>
 
-<h3 id="features-array-literals">5.2 数组直接量</h3>
+<h3 id="features-array-literals">5.2 数组字面量</h3>
 
 <h4 id="features-arrays-trailing-comma">5.2.1 尾元素后使用逗号</h4>
 
-<p>最后一个元素与结尾中括号，</p>
+<p>最后一个元素与结尾中括号之间换行时，尾元素之后始终添加一个逗号。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">const values = [
   'first value',
@@ -695,12 +695,11 @@ const data = [];
 ];
 </code></pre>
 
-<h4 id="features-arrays-ctor">5.2.2 Do not use the variadic <code>Array</code> constructor</h4>
+<h4 id="features-arrays-ctor">5.2.2 不要使用可变参数的 <code>Array</code> 构造函数</h4>
 
-<p>The constructor is error-prone if arguments are added or removed. Use a literal
-instead.</p>
+<p>当添加或删除参数时，该构造函数很容易带来问题。使用字面量的方式初始化。</p>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">const a1 = new Array(x1, x2, x3);
 const a2 = new Array(x1, x2);
@@ -708,12 +707,10 @@ const a3 = new Array(x1);
 const a4 = new Array();
 </code></pre>
 
-<p>This works as expected except for the third case: if <code>x1</code> is a whole number then
-<code>a3</code> is an array of size <code>x1</code> where all elements are <code>undefined</code>. If <code>x1</code> is any
-other number, then an exception will be thrown, and if it is anything else then
-it will be a single-element array.</p>
+<p>第三行代码会导致如下问题：如果<code>x1</code>是个整数，那么<code>a3</code>会是一个长度等于<code>x1</code>的数组，元素均为<code>undefined</code>。
+如果<code>x1</code>是其他数字，那么会产生异常。其他情况下会生成一个单元素的数组。</p>
 
-<p>Instead, write</p>
+<p>应该使用这种写法：</p>
 
 <pre><code class="language-js prettyprint">const a1 = [x1, x2, x3];
 const a2 = [x1, x2];
@@ -721,98 +718,73 @@ const a3 = [x1];
 const a4 = [];
 </code></pre>
 
-<p>Explicitly allocating an array of a given length using <code>new Array(length)</code> is
-allowed when appropriate.</p>
+<p>如果需要，也可以使用 <code>new Array(length)</code> 显示分配一个特定长度的数组。</p>
 
-<h4 id="features-arrays-non-numeric-properties">5.2.3 Non-numeric properties</h4>
+<h4 id="features-arrays-non-numeric-properties">5.2.3 非数字属性</h4>
 
-<p>Do not define or use non-numeric properties on an array (other than
-<code>length</code>). Use a <code>Map</code> (or <code>Object</code>) instead.</p>
+<p>不要在数组上定义或者使用非数字属性（除了<code>length</code>），使用<code>Map</code>或者<code>Object</code>。</p>
 
-<h4 id="features-arrays-destructuring">5.2.4 Destructuring</h4>
+<h4 id="features-arrays-destructuring">5.2.4 解构</h4>
 
-<p>Array literals may be used on the left-hand side of an assignment to perform
-destructuring (such as when unpacking multiple values from a single array or
-iterable).  A final <q>rest</q> element may be included (with no space between the
-<code>...</code> and the variable name). Elements should be omitted if they are unused.</p>
+<p>解构赋值语法常用作赋值语句的左值（例如从一个数组中提取多个值）。结尾处可以包含一个<q>rest</q>元素（<code>...</code>和rest变量名之间不要有空格）。不需要的元素应该被忽略。</p>
 
 <pre><code class="language-js prettyprint">const [a, b, c, ...rest] = generateResults();
 let [, b,, d] = someArray;
 </code></pre>
 
-<p>Destructuring may also be used for function parameters (note that a parameter
-name is required but ignored). Always specify <code>[]</code> as the default value if a
-destructured array parameter is optional, and provide default values on the left
-hand side:</p>
+<p>解构语法也可以用于函数参数。如果数据参数是可选择，那么使用提供<code>[]</code>作为默认值，并且在左侧提供相应参数默认值：</p>
 
 <pre><code class="language-js prettyprint">/** @param {!Array&lt;number&gt;=} param1 */
 function optionalDestructuring([a = 4, b = 2] = []) { &#8230; };
 </code></pre>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">function badDestructuring([a, b] = [4, 2]) { &#8230; };
 </code></pre>
 
-<p>Tip: For (un)packing multiple values into a function&#8217;s parameter or return,
-prefer object destructuring to array destructuring when possible, as it allows
-naming the individual elements and specifying a different type for each.*</p>
+<p>提示：将函数参数或者返回值包装为一个变量时，推荐使用对象而不是数组，因为可以为变量元素指定名称并且每个元素类型可以不同。</p>
 
-<h4 id="features-arrays-spread-operator">5.2.5 Spread operator</h4>
+<h4 id="features-arrays-spread-operator">5.2.5 扩展操作符</h4>
 
-<p>Array literals may include the spread operator (<code>...</code>) to flatten elements out
-of one or more other iterables.  The spread operator should be used instead of
-more awkward constructs with <code>Array.prototype</code>.  There is no space after the
-<code>...</code>.</p>
+<p>数组字面量内可以使用扩展操作符<code>...</code>从一个或者多个其他值中提取元素，使用扩展操作符而不要使用<code>Array.prototype</code>上的方法进行元素提取操作。<code>...</code>之后不要有空格。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
-<pre><code class="language-js prettyprint">[...foo]   // preferred over Array.prototype.slice.call(foo)
-[...foo, ...bar]   // preferred over foo.concat(bar)
+<pre><code class="language-js prettyprint">[...foo]   // 优于 Array.prototype.slice.call(foo)
+[...foo, ...bar]   // 优于 foo.concat(bar)
 </code></pre>
 
-<h3 id="features-object-literals">5.3 Object literals</h3>
+<h3 id="features-object-literals">5.3 对象字面量</h3>
 
-<h4 id="features-objects-use-trailing-comma">5.3.1 Use trailing commas</h4>
+<h4 id="features-objects-use-trailing-comma">5.3.1 尾元素后使用逗号</h4>
 
-<p>Include a trailing comma whenever there is a line break between the final
-property and the closing brace.</p>
+<p>最后一个元素与结尾大括号之间换行时，尾元素之后始终添加一个逗号。</p>
 
-<h4 id="features-objects-ctor">5.3.2 Do not use the <code>Object</code> constructor</h4>
+<h4 id="features-objects-ctor">5.3.2 不要使用<code>Object</code>构造函数</h4>
 
-<p>While <code>Object</code> does not have the same problems as <code>Array</code>, it is still
-disallowed for consistency. Use an object literal (<code>{}</code> or <code>{a: 0, b: 1, c: 2}</code>)
-instead.</p>
+<p>尽管<code>Object</code>构造函数没有<code>Array</code>的问题，但出于一致性考虑，仍然不推荐该用法，使用对象字面量进行初始化，例如<code>{}</code> 或者 <code>{a: 0, b: 1, c: 2}</code>。</p>
 
-<h4 id="features-objects-mixing-keys">5.3.3 Do not mix quoted and unquoted keys</h4>
+<h4 id="features-objects-mixing-keys">5.3.3 不要混用加引号和不加引号的键</h4>
 
-<p>Object literals may represent either <em>structs</em> (with unquoted keys and/or
-symbols) or <em>dicts</em> (with quoted and/or computed keys). Do not mix these key
-types in a single object literal.</p>
+<p>对象字面量可以使用不加引号的键或者符号表示结构体，也可以使用加引号或者计算出的键表示字典。不要再单个对象字面量中混用这些键类型。</p>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">{
-  a: 42, // struct-style unquoted key
-  'b': 43, // dict-style quoted key
+  a: 42, // 结构体类型的不加引号的键
+  'b': 43, // 字典类型的加引号的键
 }
 </code></pre>
 
-<h4 id="features-objects-computed-property-names">5.3.4 Computed property names</h4>
+<h4 id="features-objects-computed-property-names">5.3.4 计算属性名</h4>
 
-<p>Computed property names (e.g., <code>{['key' + foo()]: 42}</code>) are allowed, and are
-considered dict-style (quoted) keys (i.e., must not be mixed with non-quoted
-keys) unless the computed property is a symbol (e.g., <code>[Symbol.iterator]</code>).
-Enum values may also be used for computed keys, but should not be mixed with
-non-enum keys in the same literal.</p>
+<p>允许使用计算属性名（例如<code>{['key' + foo()]: 42}</code>）。计算属性名术语字典类型的键（意味着其不能与不加引号的键混用），除非该计算属性是一个 symbol（例如<code>[Symbol.iterator]</code>）。
+ 枚举值也可以用作计算属性，但不应该同其他非枚举键混用。</p>
 
-<h4 id="features-objects-method-shorthand">5.3.5 Method shorthand</h4>
+<h4 id="features-objects-method-shorthand">5.3.5 方法简写</h4>
 
-<p>Methods can be defined on object literals using the method shorthand (<code>{method()
-{&#8230; }}</code>) in place of a colon immediately followed by a <code>function</code> or arrow
-function literal.</p>
-
-<p>Example:</p>
+<p>对象字面量中的方法定义可以简写，例如：</p>
 
 <pre><code class="language-js prettyprint">return {
   stuff: 'candy',
@@ -822,11 +794,9 @@ function literal.</p>
 };
 </code></pre>
 
-<p>Note that <code>this</code> in a method shorthand or <code>function</code> refers to the object
-literal itself whereas <code>this</code> in an arrow function refers to the scope outside
-the object literal.</p>
+<p>注意方法简写或者函数中的<code>this</code>指向对象字面量自身，而箭头函数中的<code>this</code>则与对象字面量外部作用域的<code>this</code>保持一致。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">class {
   getObjectLiteral() {
@@ -839,11 +809,9 @@ the object literal.</p>
 }
 </code></pre>
 
-<h4 id="features-objects-shorthand-properties">5.3.6 Shorthand properties</h4>
+<h4 id="features-objects-shorthand-properties">5.3.6 属性简写</h4>
 
-<p>Shorthand properties are allowed on object literals.</p>
-
-<p>Example:</p>
+<p>可以在对象字面量中使用属性简写，例如：</p>
 
 <pre><code class="language-js prettyprint">const foo = 1;
 const bar = 2;
@@ -855,21 +823,15 @@ const obj = {
 assertEquals(3, obj.method());
 </code></pre>
 
-<h4 id="features-objects-destructuring">5.3.7 Destructuring</h4>
+<h4 id="features-objects-destructuring">5.3.7 对象结构</h4>
 
-<p>Object destructuring patterns may be used on the left-hand side of an assignment
-to perform destructuring and unpack multiple values from a single object.</p>
+<p>对象解构语法常用作赋值语句的左值，用于从单个对象中提取多个值。</p>
 
-<p>Destructured objects may also be used as function parameters, but should be kept
-as simple as possible: a single level of unquoted shorthand properties. Deeper
-levels of nesting and computed properties may not be used in parameter
-destructuring.  Specify any default values in the left-hand-side of the
-destructured parameter (<code>{str = 'some default'} = {}</code>, rather than <code class="badcode">{str} = {str: 'some default'}</code>), and if a destructured
-object is itself optional, it must default to <code>{}</code>.  The JSDoc for the
-destructured parameter may be given any name (the name is unused but is required
-by the compiler).</p>
+<p>解构对象也用于函数参数，但用法应该尽量简单，只使用单层不加引号的属性简写。不建议在参数解构中使用多层或者计算属性。
+在参数解构语句的左值为参数指定默认值，例如<code>{str = 'some default'} = {}</code>而不是<code class="badcode">{str} = {str: 'some default'}</code>。
+如果解构对象本身时可选的，那么必须指定默认值<code>{}</code>。JSDoc中可以为解构参数指定任何名字（该名字并不实际使用，但编译器要求提供）。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">/**
  * @param {string} ordinary
@@ -880,7 +842,7 @@ by the compiler).</p>
 function destructured(ordinary, {num, str = 'some default'} = {})
 </code></pre>
 
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">/** @param {{x: {num: (number|undefined), str: (string|undefined)}}} param1 */
 function nestedTooDeeply({x: {num, str}}) {};
@@ -892,18 +854,14 @@ function computedKey({a, b, [a + b]: c}) {};
 function nontrivialDefault({a, b} = {a: 2, b: 4}) {};
 </code></pre>
 
-<p>Destructuring may also be used for <code>goog.require</code> statements, and in this case
-must not be wrapped: the entire statement occupies one line, regardless of how
-long it is (see <a href="#file-goog-require">??</a>).</p>
+<p>解构语法也可以用于<code>goog.require</code>语句，此时不允许断行（见<a href="#file-goog-require">??</a>）。</p>
 
-<h4 id="features-objects-enums">5.3.8 Enums</h4>
+<h4 id="features-objects-enums">5.3.8 枚举</h4>
 
-<p>Enumerations are defined by adding the <code>@enum</code> annotation to an object literal.
-Additional properties may not be added to an enum after it is defined.  Enums
-must be constant, and all enum values must be deeply immutable.</p>
+<p>通过在对象字面量上添加<code>@enum</code>注解来定义枚举。枚举定义后，不允许再添加属性。枚举必须是常量，所有枚举值必须是必须是不递归可变的。</p>
 
 <pre><code class="language-js prettyprint">/**
- * Supported temperature scales.
+ * 所支持的温标
  * @enum {string}
  */
 const TemperatureScale = {
@@ -912,34 +870,31 @@ const TemperatureScale = {
 };
 
 /**
- * An enum with two options.
+ * 两个选项的枚举。
  * @enum {number}
  */
 const Option = {
-  /** The option used shall have been the first. */
+  /** 该选项必须是第一个 */
   FIRST_OPTION: 1,
-  /** The second among two options. */
+  /** 第二个选项 */
   SECOND_OPTION: 2,
 };
 </code></pre>
 
-<h3 id="features-classes">5.4 Classes</h3>
+<h3 id="features-classes">5.4 类</h3>
 
-<h4 id="features-classes-constructors">5.4.1 Constructors</h4>
+<h4 id="features-classes-constructors">5.4.1 构造函数</h4>
 
-<p>Constructors are optional for concrete classes. Subclass constructors must call
-<code>super()</code> before setting any fields or otherwise accessing <code>this</code>.  Interfaces
-must not define a constructor.</p>
+<p>具体类（concrete class）的构造函数是可选的。子类构造函数在访问<code>this</code>或者设置字段（fields）之前，必须先调用<code>super()</code>。接口不允许定义构造函数。</p>
 
-<h4 id="features-classes-fields">5.4.2 Fields</h4>
+<h4 id="features-classes-fields">5.4.2 字段（Fields）</h4>
 
-<p>Set all of a concrete object&#8217;s fields (i.e. all properties other than methods)
-in the constructor. Annotate fields that are never reassigned with <code>@const</code>
-(these need not be deeply immutable). Private fields must be annotated with
-<code>@private</code> and their names must end with a trailing underscore. Fields are never
-set on a concrete class' <code>prototype</code>.</p>
+<p>必须在构造函数中设置所有对象字段（即除了方法之外的所有属性）的值。
+  给所有不变的字段添加<code>@const</code>注解（字段内容必须是深层不可变的 deeply immutable）。
+  私有字段必须天津爱<code>@private</code>注解，名称必须以下划线结尾。
+  不允许设置具体类（concrete class）原型的字段。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">class Foo {
   constructor() {
@@ -949,168 +904,81 @@ set on a concrete class' <code>prototype</code>.</p>
 }
 </code></pre>
 
-<p>Tip: Properties should never be added to or removed from an instance after the
-constructor is finished, since it significantly hinders VMs&#8217; ability to
-optimize.  If necessary, fields that are initialized later should be explicitly
-set to <code>undefined</code> in the constructor to prevent later shape changes. Adding
-<code>@struct</code> to an object will check that undeclared properties are not
-added/accessed.  Classes have this added by default.</p>
+<p>提示：构造函数执行结束后，不允许在对象实例上添加或者删除属性，这会严重影响虚拟机的优化能力。
+  如果确实有属性要延后初始化，在构造函数中将其设置为<code>undefined</code>。</p>
 
-<h4 id="features-classes-computed-properties">5.4.3 Computed properties</h4>
+<h4 id="features-classes-computed-properties">5.4.3 计算属性</h4>
 
+<p>只允许对 symbol 属性使用子酸属性。不幸允许使用字典类型的属性（见 <a href="#features-objects-mixing-keys">??</a>）。
+  对可枚举的类需要定义<code>[Symbol.iterator]</code>方法。除此之外，<code>Symbol</code> 应该慎用。</p>
 
+<p>提示：慎用其他内置 symbol（<code>Symbol.isConcatSpreadable</code>等），旧浏览器可能不支持。</p>
 
-<p>Computed properties may only be used in classes when the property is a
-symbol. Dict-style properties (that is, quoted or computed non-symbol keys, as
-defined in <a href="#features-objects-mixing-keys">??</a>) are not allowed.  A
-<code>[Symbol.iterator]</code> method should be defined for any classes that are logically
-iterable.  Beyond this, <code>Symbol</code> should be used sparingly.</p>
+<h4 id="features-classes-static-methods">5.4.4 静态方法</h4>
 
-<p>Tip: be careful of using any other built-in symbols (e.g., <code>Symbol.isConcatSpreadable</code>) as they are not polyfilled by the compiler and will therefore not work in older browsers.</p>
+<p>在不影响可读性的情况下，建议使用模块内局部函数而不会死私有静态方法。</p>
 
-<h4 id="features-classes-static-methods">5.4.4 Static methods</h4>
+<p>静态函数只能在其定义所属的类上调用。</p>
 
-
-
-<p>Where it does not interfere with readability, prefer module-local functions over
-private static methods.</p>
-
-<p>Static methods should only be called on the base class itself. Static methods
-should not be called on variables containing a dynamic instance that may be
-either the constructor or a subclass constructor (and must be defined with
-<code>@nocollapse</code> if this is done), and must not be called directly on a subclass
-that doesn&#8217;t define the method itself.</p>
-
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">class Base { /** @nocollapse */ static foo() {} }
 class Sub extends Base {}
-function callFoo(cls) { cls.foo(); }  // discouraged: don't call static methods dynamically
-Sub.foo();  // illegal: don't call static methods on subclasses that don't define it themselves
+function callFoo(cls) { cls.foo(); }  // 不推荐：不要以动态方式调用静态函数
+Sub.foo();  // 非法使用：Sub自身没有定义foo静态方法，禁止这种用法
 </code></pre>
 
-<h4 id="features-classes-old-style">5.4.5 Old-style class declarations</h4>
+<h4 id="features-classes-old-style">5.4.5 老式类定义</h4>
 
-<p>While ES6 classes are preferred, there are cases where ES6 classes may not be
-feasible.  For example:</p>
+<p>尽管更推荐使用 ES6 的类定义方式，但一些情况下无法使用 ES6 的方式，例如：</p>
 
 <ol>
-<li><p>If there exist or will exist subclasses, including frameworks that create
-subclasses, that cannot be immediately changed to use ES6 class syntax. If
-such a class were to use ES6 syntax, all downstream subclasses not using ES6
-class syntax would need to be modified.</p></li>
-<li><p>Frameworks that require a known <code>this</code> value before calling the superclass
-constructor, since constructors with ES6 super classes do not have
-access to the instance <code>this</code> value until the call to <code>super</code> returns.</p></li>
+<li><p>框架代码中的类被继承产生了子类，而这些子类无法立即使用 ES6 语法重写。如果父类切换到 ES6 语法，所有子类也必须修改。</p></li>
+<li><p>在调用父类构造函数之前就需要使用 <code>this</code> 的情况。原因是 ES6 的父类构造函数调用<code>super</code>执行结束之前，不能访问<code>this</code>变量。</p></li>
 </ol>
 
-<p>In all other ways the style guide still applies to this code: <code>let</code>, <code>const</code>,
-default parameters, rest, and arrow functions should all be used when
-appropriate.</p>
+<p>同样，合适的情况下推荐使用<code>let</code>，<code>const</code>，默认参数，剩余参数，箭头函数。</p>
 
-<p><code>goog.defineClass</code> allows for a class-like definition similar to ES6 class
-syntax:</p>
+<p>类实例的属性应该在构造函数中进行设置，方法应该在构造函数原型上定义。</p>
 
-<pre><code class="language-javascript">let C = goog.defineClass(S, {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    S.call(this, 2);
-    /** @const */
-    this.prop = value;
-  },
+<h4 id="features-classes-prototypes">5.4.6 尽量不要直接操作<code>prototype</code>s</h4>
 
-  /**
-   * @param {string} param
-   * @return {number}
-   */
-  method(param) {
-    return 0;
-  },
-});
-</code></pre>
+<p>使用<code>class</code>关键词定义类比<code>prototype</code>的方式更简洁，可读性更强。一般代码不需要使用<code>prototype</code>。
+  禁止在内置对象上使用混入（Mixin）或者修改内置对象原型。</p>
 
-<p>Alternatively, while <code>goog.defineClass</code> should be preferred for all new code,
-more traditional syntax is also allowed.</p>
+<p><strong>例外</strong>：框架代码（例如Polymer, Angular）可能仍要使用<code>prototype</code>s，以避免更糟糕的解决方案。</p>
 
-<pre><code class="language-javascript">/**
-  * @constructor @extends {S}
-  * @param {string} value
-  */
-function C(value) {
-  S.call(this, 2);
-  /** @const */
-  this.prop = value;
-}
-goog.inherits(C, S);
+<p><strong>例外</strong>：在接口上定义字段（见 <a href="#features-classes-interfaces">??</a>）。</p>
 
-/**
- * @param {string} param
- * @return {number}
- */
-C.prototype.method = function(param) {
-  return 0;
-};
-</code></pre>
+<h4 id="features-classes-getters-and-setters">5.4.7 Getters & Setters</h4>
 
-<p>Per-instance properties should be defined in the constructor after the call to the super class constructor, if there is a super class.  Methods should be defined on the prototype of the constructor.</p>
+<p>不要使用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get">JavaScript getter 和 setter 属性</a>。
+  getter 和 setter 有一些奇怪而难以理解的特性，并且编译器对其支持有限。推荐使用普通方法。</p>
 
-<p>Defining constructor prototype hierarchies correctly is harder than it first appears!  For that reason, it is best to use <code>goog.inherits</code> from <a href="http://code.google.com/closure/library/">the Closure Library </a>.</p>
+<p><strong>例外</strong>：在数据绑定框架（例如Angular，Polymer）中可以少量使用getter和setter，
+  并且要用 <code>get foo()</code> 、 <code>set foo(value)</code>，或者 <code>Object.defineProperties</code> 的形式，
+  不要使用 <code>Object.defineProperty</code>，因为其函数名容易与属性重命名混淆。Getters 中不允许修改可观测状态。</p>
 
-<h4 id="features-classes-prototypes">5.4.6 Do not manipulate <code>prototype</code>s directly</h4>
-
-<p>The <code>class</code> keyword allows clearer and more readable class definitions than
-defining <code>prototype</code> properties. Ordinary implementation code has no business
-manipulating these objects, though they are still useful for defining <code>@record</code>
-interfaces and classes as defined in <a href="#features-classes-old-style">??</a>. Mixins
-and modifying the prototypes of builtin objects are
-explicitly forbidden.</p>
-
-<p><strong>Exception</strong>: Framework code (such as Polymer, or Angular) may need to use <code>prototype</code>s, and should not
-resort to even-worse workarounds to avoid doing so.</p>
-
-<p><strong>Exception</strong>: Defining fields in interfaces (see <a href="#features-classes-interfaces">??</a>).</p>
-
-<h4 id="features-classes-getters-and-setters">5.4.7 Getters and Setters</h4>
-
-<p>Do not use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get">JavaScript getter and setter properties</a>.  They are potentially
-surprising and difficult to reason about, and have limited support in the
-compiler.  Provide ordinary methods instead.</p>
-
-<p><strong>Exception</strong>: when working with data binding frameworks (such as Angular and
-Polymer), getters and setters may be used sparingly.  Note, however, that
-compiler support is limited.  When they are used, they must be defined either
-with <code>get foo()</code> and <code>set foo(value)</code> in the class or object literal, or if that
-is not possible, with <code>Object.defineProperties</code>.  Do not use
-<code>Object.defineProperty</code>, which interferes with property renaming.  Getters
-<strong>must not</strong> change observable state.</p>
-
-<p>Illegal:</p>
+<p>非法：</p>
 
 <pre><code class="language-js prettyprint badcode">class Foo {
   get next() { return this.nextId++; }
 }
 </code></pre>
 
-<h4 id="features-classes-overriding-tostring">5.4.8 Overriding toString</h4>
+<h4 id="features-classes-overriding-tostring">5.4.8 重载 toString</h4>
 
-<p>The <code>toString</code> method may be overridden, but must always succeed and never have
-visible side effects.</p>
+<p>可以按需重载 <code>toString</code> 方法，但该方法必须始终成功，且不能有可见的副作用。</p>
 
-<p>Tip: Beware, in particular, of calling other methods from toString, since
-exceptional conditions could lead to infinite loops.</p>
+<p>提示：尤其要注意在 toString 中调用其他函数的情况，因为特定情况下可能导致死循环。</p>
 
-<h4 id="features-classes-interfaces">5.4.9 Interfaces</h4>
+<h4 id="features-classes-interfaces">5.4.9 接口</h4>
 
-<p>Interfaces may be declared with <code>@interface</code> or <code>@record</code>. Interfaces declared
-with <code>@record</code> can be explicitly (i.e. via <code>@implements</code>) or implicitly
-implemented by a class or object literal.</p>
+<p>使用<code>@interface</code> 或者 <code>@record</code>注解来声明接口。</p>
 
-<p>All non-static method bodies on an interface must be empty blocks.  Fields must
-be defined after the interface body as stubs on the <code>prototype</code>.</p>
+<p>接口上的非静态方法必须是空方法。接口字段必须在<code>prototype</code>上定义。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">/**
  * Something that can frobnicate.
@@ -1128,15 +996,13 @@ class Frobnicator {
 Frobnicator.prototype.attempts;
 </code></pre>
 
-<h3 id="features-functions">5.5 Functions</h3>
+<h3 id="features-functions">5.5 函数</h3>
 
-<h4 id="features-functions-top-level-functions">5.5.1 Top-level functions</h4>
+<h4 id="features-functions-top-level-functions">5.5.1 顶级函数</h4>
 
-<p>Exported functions may be defined directly on the <code>exports</code> object, or else
-declared locally and exported separately.  Non-exported functions are encouraged
-and should not be declared <code>@private</code>.</p>
+<p>导出函数可以直接在<code>export</code>对象上定义，也可以声明然后另外导出。鼓励使用非导出函数，不需要使用<code>@private</code>注解。</p>
 
-<p>Examples:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">/** @return {number} */
 function helperFunction() {
@@ -1163,31 +1029,21 @@ exports.foo = (arg) =&gt; {
 };
 </code></pre>
 
-<h4 id="features-functions-nested-functions">5.5.2 Nested functions and closures</h4>
+<h4 id="features-functions-nested-functions">5.5.2 嵌套函数与闭包</h4>
 
-<p>Functions may contain nested function definitions.  If it is useful to give the
-function a name, it should be assigned to a local <code>const</code>.</p>
+<p>函数中可以包含嵌套函数定义。只能将函数赋给一个常量。</p>
 
-<h4 id="features-functions-arrow-functions">5.5.3 Arrow functions</h4>
+<h4 id="features-functions-arrow-functions">5.5.3 箭头函数</h4>
 
-<p>Arrow functions provide a concise syntax and fix a number of difficulties with
-<code>this</code>.  Prefer arrow functions over the <code>function</code> keyword, particularly for
-nested functions (but see <a href="#features-objects-method-shorthand">??</a>).</p>
+<p>箭头函数语法简介，并且解决了<code>this</code>的一些难题。优先使用箭头函数而不是<code>function</code>关键词，尤其是定义嵌套函数时（例外情况见 <a href="#features-objects-method-shorthand">??</a>）。</p>
 
-<p>Prefer using arrow functions over <code>f.bind(this)</code>, and especially over
-<code>goog.bind(f, this)</code>. Avoid writing <code>const self = this</code>. Arrow functions are
-particularly useful for callbacks, which sometimes pass unexpected additional
-arguments.</p>
+<p>推荐使用箭头函数而不是 <code>f.bind(this)</code>。避免<code>const self = this</code>的写法。回调函数有时会传递一些意料之外的参数，箭头函数在这种情况下尤其有用。</p>
 
-<p>The right-hand side of the arrow may be a single expression or a block.
-Parentheses around the arguments are optional if there is only a single
-non-destructured argument.</p>
+<p>箭头函数右侧部分可以是表达式或是代码块。如果箭头函数只有一个非结构参数，参数外围的圆括号是可选的。</p>
 
-<p>Tip: It is a good practice to use parentheses even for single-argument arrows,
-since the code may still parse reasonably (but incorrectly) if the parentheses
-are forgotten when an additional argument is added.</p>
+<p>提示：始终使用圆括号包括参数是个好习惯，因为如果没有括号，可能后续添加了一个参数但漏了括号，此时代码不会报错，但结果是错的。</p>
 
-<h4 id="features-functions-generators">5.5.4 Generators</h4>
+<h4 id="features-functions-generators">5.5.4 生成器（Generators）</h4>
 
 <p>Generators enable a number of useful abstractions and may be used as needed.</p>
 
