@@ -209,7 +209,7 @@ const {clear, forEach, map} = goog.require('goog.array');
 goog.require('my.framework.initialization');
 </code></pre>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js badcode prettyprint">const randomName = goog.require('something.else'); // name must match
 
@@ -247,7 +247,7 @@ object literal may optionally be treated as if it were a block-like construct.</
 <p>对所有的控制结构使用大括号（例如 <code>if</code>, <code>else</code>, <code>for</code>, <code>do</code>,
 <code>while</code>，等等），即便其中只有一行代码。非空代码块的第一行必须以新行开始。</p>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js badcode prettyprint">if (someVeryLongCondition())
   doSomething();
@@ -300,7 +300,7 @@ for (let i = 0; i &lt; foo.length; i++) bar(foo[i]);
 <pre><code class="language-js prettyprint">function doNothing() {}
 </code></pre>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">if (condition) {
   // &#8230;
@@ -699,7 +699,7 @@ const data = [];
 
 <p>当添加或删除参数时，该构造函数很容易带来问题。使用字面量的方式初始化。</p>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">const a1 = new Array(x1, x2, x3);
 const a2 = new Array(x1, x2);
@@ -738,7 +738,7 @@ let [, b,, d] = someArray;
 function optionalDestructuring([a = 4, b = 2] = []) { &#8230; };
 </code></pre>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">function badDestructuring([a, b] = [4, 2]) { &#8230; };
 </code></pre>
@@ -769,7 +769,7 @@ function optionalDestructuring([a = 4, b = 2] = []) { &#8230; };
 
 <p>对象字面量可以使用不加引号的键或者符号表示结构体，也可以使用加引号或者计算出的键表示字典。不要再单个对象字面量中混用这些键类型。</p>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">{
   a: 42, // 结构体类型的不加引号的键
@@ -842,7 +842,7 @@ assertEquals(3, obj.method());
 function destructured(ordinary, {num, str = 'some default'} = {})
 </code></pre>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">/** @param {{x: {num: (number|undefined), str: (string|undefined)}}} param1 */
 function nestedTooDeeply({x: {num, str}}) {};
@@ -920,7 +920,7 @@ const Option = {
 
 <p>静态函数只能在其定义所属的类上调用。</p>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">class Base { /** @nocollapse */ static foo() {} }
 class Sub extends Base {}
@@ -959,7 +959,7 @@ Sub.foo();  // 非法使用：Sub自身没有定义foo静态方法，禁止这�
   并且要用 <code>get foo()</code> 、 <code>set foo(value)</code>，或者 <code>Object.defineProperties</code> 的形式，
   不要使用 <code>Object.defineProperty</code>，因为其函数名容易与属性重命名混淆。Getters 中不允许修改可观测状态。</p>
 
-<p>非法：</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">class Foo {
   get next() { return this.nextId++; }
@@ -1043,15 +1043,14 @@ exports.foo = (arg) =&gt; {
 
 <p>提示：始终使用圆括号包括参数是个好习惯，因为如果没有括号，可能后续添加了一个参数但漏了括号，此时代码不会报错，但结果是错的。</p>
 
-<h4 id="features-functions-generators">5.5.4 生成器（Generators）</h4>
+<h4 id="features-functions-generators">5.5.4 生成器函数（Generators）</h4>
 
-<p>Generators enable a number of useful abstractions and may be used as needed.</p>
+<p>生成器函数提供了一些高级抽象特征，可以按需使用。</p>
 
-<p>When defining generator functions, attach the <code>*</code> to the <code>function</code> keyword when
-present, and separate it with a space from the name of the function.  When using
-delegating yields, attach the <code>*</code> to the <code>yield</code> keyword.</p>
+<p>定义生成器函数时，<code>*</code>符号紧贴在<code>function</code>关键词后，与函数名之前用一个空格分隔。
+  使用代理yield（delegating yield）时，<code>*</code>符号紧贴在<code>yield</code>关键词后。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">/** @return {!Iterator&lt;number&gt;} */
 function* gen1() {
@@ -1071,114 +1070,91 @@ class SomeClass {
 }
 </code></pre>
 
-<h4 id="features-functions-parameters">5.5.5 Parameters</h4>
+<h4 id="features-functions-parameters">5.5.5 参数</h4>
 
-<p>Function parameters must be typed with JSDoc annotations in the JSDoc preceding
-the function&#8217;s definition, except in the case of same-signature <code>@override</code>s,
-where all types are omitted.</p>
+<p>在书定义前必须使用JSDoc注解声明所有函数参数类型。使用<code>@override</code>注解重写相同签名的父类函数时，可以忽略参数类型声明。</p>
 
-<p>Parameter types <em>may</em> be specified inline, immediately before the parameter name
-(as in <code>(/** number */ foo, /** string */ bar) =&gt; foo + bar</code>). Inline and
-<code>@param</code> type annotations <em>must not</em> be mixed in the same function definition.</p>
+<p>也可以在行内声明参数类型（例如<code>(/** number */ foo, /** string */ bar) =&gt; foo + bar</code>）。同一个函数上行内声明和<code>@param</code>形式的类型注解不能混合使用。</p>
 
-<h5 id="features-functions-default-parameters">5.5.5.1 Default parameters</h5>
+<h5 id="features-functions-default-parameters">5.5.5.1 默认参数</h5>
 
-<p>Optional parameters are permitted using the equals operator in the parameter
-list. Optional parameters must include spaces on both sides of the equals
-operator, be named exactly like required parameters (i.e., not prefixed with
-<code>opt_</code>), use the <code>=</code> suffix in their JSDoc type, come after required parameters,
-and not use initializers that produce observable side effects. All optional
-parameters must have a default value in the function declaration, even if that
-value is <code>undefined</code>.</p>
+<p>可选参数出现在必填参数之后，命名与其他参数相同（不要使用<code>opt_</code>前缀等），必须指定默认值（即使默认值是<code>undefined</code>），等号前后各一个空格。
+  在JSDoc中使用<code>=</code>进行类型声明。默认值初始化不能产生副作用。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">/**
- * @param {string} required This parameter is always needed.
- * @param {string=} optional This parameter can be omitted.
- * @param {!Node=} node Another optional parameter.
+ * @param {string} required - 必填参数
+ * @param {string=} optional - 该参数可忽略
+ * @param {!Node=} node - 另一个可忽略的参数
  */
 function maybeDoSomething(required, optional = '', node = undefined) {}
 </code></pre>
 
-<p>Use default parameters sparingly. Prefer destructuring (as in
-<a href="#features-objects-destructuring">??</a>) to create readable APIs when there
-are more than a small handful of optional parameters that do not have a natural
-order.</p>
+<p>如果有多个可选参数，且之间没有明确的顺序，优先使用解构语法（<a href="#features-objects-destructuring">??</a>）</p>
 
-<p>Note: Unlike Python's default parameters, it is okay to use initializers that
-return new mutable objects (such as <code>{}</code> or <code>[]</code>) because the initializer is
-evaluated each time the default value is used, so a single object won't be
-shared across invocations.</p>
+<p>注意：与Python不同的是，javascript参数默认值中初始化对象（例如<code>{}</code> 或者 <code>[]</code>）是安全的，
+  因为每次应用参数默认值时默认值初始化方法都会执行，因此不同的调用之间不会共用一个对象。</p>
 
-<p>Tip: While arbitrary expressions including function calls may be used as
-initializers, these should be kept as simple as possible. Avoid initializers
-that expose shared mutable state, as that can easily introduce unintended
-coupling between function calls.</p>
+<p>提示：尽管包括函数调用之内的任意表达式都可以用于默认值初始化，但初始化方式应该尽量简单。应该尽量避免初始化默认值中使用共享的可变状态，这可能会导致不同的函数调用之间产生耦合。</p>
 
-<h5 id="features-functions-rest-parameters">5.5.5.2 Rest parameters</h5>
+<h5 id="features-functions-rest-parameters">5.5.5.2 剩余参数</h5>
 
-<p>Use a <em>rest</em> parameter instead of accessing <code>arguments</code>. Rest parameters are
+<p>不要使用<code>arguments</code>，使用剩余参数。JSDoc中使用<code>...</code>声明剩余参数的类型。
+  剩余参数必须是参数列表中的最后一个参数。<code>...</code>和参数名之间不能有空格。不要将其命名为<code>var_args</code>。
+  不要将局部变量或者参数命名为<code>arguments</code>，以免与内置变量混淆。
+  Use a <em>rest</em> parameter instead of accessing <code>arguments</code>. Rest parameters are
 typed with a <code>...</code> prefix in their JSDoc. The rest parameter must be the last
 parameter in the list. There is no space between the <code>...</code> and the parameter
 name.  Do not name the rest parameter <code>var_args</code>. Never name a local variable or
 parameter <code>arguments</code>, which confusingly shadows the built-in name.</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">/**
- * @param {!Array&lt;string&gt;} array This is an ordinary parameter.
- * @param {...number} numbers The remainder of arguments are all numbers.
+ * @param {!Array&lt;string&gt;} array - 普通参数
+ * @param {...number} numbers 剩余的参数都是数字
  */
 function variadic(array, ...numbers) {}
 </code></pre>
 
-<h4 id="features-functions-returns">5.5.6 Returns</h4>
+<h4 id="features-functions-returns">5.5.6 返回值</h4>
 
-<p>Function return types must be specified in the JSDoc directly above the function
-definition, except in the case of same-signature <code>@override</code>s where all types
-are omitted.</p>
+<p>必须在函数JSDoc注释中声明返回值类型，使用<code>@override</code>注解重写相同签名的父类函数时，可以忽略类型声明。</p>
 
-<h4 id="features-functions-generics">5.5.7 Generics</h4>
+<h4 id="features-functions-generics">5.5.7 泛型</h4>
 
-<p>Declare generic functions and methods when necessary with <code>@template TYPE</code> in
-the JSDoc above the class definition.</p>
+<p>声明泛型函数时，在JSDoc中使用 <code>@template TYPE</code> 进行声明</p>
 
-<h4 id="features-functions-spread-operator">5.5.8 Spread operator</h4>
+<h4 id="features-functions-spread-operator">5.5.8 扩展操作符（Spread operator）</h4>
 
-<p>Function calls may use the spread operator (<code>...</code>).  Prefer the spread operator
-to <code>Function.prototype.apply</code> when an array or iterable is unpacked into
-multiple parameters of a variadic function.  There is no space after the <code>...</code>.</p>
+<p>可以在调用函数时使用扩展操作符<code>...</code>。
+  需要将数组或可枚举对象解析为可变长参数函数（variadic function）的多个参数时，推荐使用扩展操作符而不是<code>Function.prototype.apply</code>。
+  <code>...</code>之后不要添加空格。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">function myFunction(...elements) {}
 myFunction(...array, ...iterable, ...generator());
 </code></pre>
 
-<h3 id="features-string-literals">5.6 String literals</h3>
+<h3 id="features-string-literals">5.6 字符串字面量</h3>
 
-<h4 id="features-strings-use-single-quotes">5.6.1 Use single quotes</h4>
+<h4 id="features-strings-use-single-quotes">5.6.1 使用单引号</h4>
 
-<p>Ordinary string literals are delimited with single quotes (<code>'</code>), rather than
-double quotes (<code>"</code>).</p>
+<p>使用单引号（<code>'</code>）包括普通字符串字面量，不要使用双引号（<code>"</code>）。</p>
 
-<p>Tip: if a string contains a single quote character, consider using a template
-string to avoid having to escape the quote.</p>
+<p>提示：如果字符串中包含单引号，考虑使用模板字符串，以避免使用转义。</p>
 
-<p>Ordinary string literals may not span multiple lines.</p>
+<p>普通字符串字面量不能跨行。</p>
 
-<h4 id="features-strings-template-strings">5.6.2 Template strings</h4>
+<h4 id="features-strings-template-strings">5.6.2 模板字符串</h4>
 
-<p>Use template strings (delimited with <code>`</code>) over complex string
-concatenation, particularly if multiple string literals are involved. Template
-strings may span multiple lines.</p>
+<p>使用模板字符串不要使用复杂的子字符串拼接，尤其是涉及多个字符串字面量时。模板字符串可以跨行。</p>
 
-<p>If a template string spans multiple lines, it does not need to follow the
-indentation of the enclosing block, though it may if the added whitespace does
-not matter.</p>
+<p>模板字符串跨多行时，不需要遵循其所在块的缩进。</p>
 
-<p>Example:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">function arithmetic(a, b) {
   return `Here is a table of arithmetic operations:
@@ -1189,28 +1165,25 @@ ${a} / ${b} = ${a / b}`;
 }
 </code></pre>
 
-<h4 id="features-strings-no-line-continuations">5.6.3 No line continuations</h4>
+<h4 id="features-strings-no-line-continuations">5.6.3 不要使用续行符（line continuations）</h4>
 
-<p>Do not use <em>line continuations</em> (that is, ending a line inside a string literal
-with a backslash) in either ordinary or template string literals. Even though
-ES5 allows this, it can lead to tricky errors if any trailing whitespace comes
-after the slash, and is less obvious to readers.</p>
+<p>无论在普通字符串还是模板字符串中都不要使用续行符。如果反斜线之后有空白会很难观察，这可能会导致难以发觉的错误。</p>
 
-<p>Illegal:</p>
+<p>不规范：</p>
 
 <pre><code class="language-js prettyprint badcode">const longString = 'This is a very long string that far exceeds the 80 \
     column limit. It unfortunately contains long stretches of spaces due \
     to how the continued lines are indented.';
 </code></pre>
 
-<p>Instead, write</p>
+<p>推荐写法：</p>
 
 <pre><code class="language-js prettyprint">const longString = 'This is a very long string that far exceeds the 80 ' +
     'column limit. It does not contain long stretches of spaces since ' +
     'the concatenated strings are cleaner.';
 </code></pre>
 
-<h3 id="features-number-literals">5.7 Number literals</h3>
+<h3 id="features-number-literals">5.7 数字字面量</h3>
 
 <p>Numbers may be specified in decimal, hex, octal, or binary.  Use exactly <code>0x</code>,
 <code>0o</code>, and <code>0b</code> prefixes, with lowercase letters, for hex, octal, and binary,
