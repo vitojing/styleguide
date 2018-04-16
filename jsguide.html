@@ -1310,96 +1310,75 @@ if (!x) alert(typeof x);  // alerts 'boolean', as expected
 
 <h2 id="naming">6 命名</h2>
 
-<h3 id="naming-rules-common-to-all-identifiers">6.1 标志符通用规则</h3>
+<h3 id="naming-rules-common-to-all-identifiers">6.1 标志符（Identifier）通用规则</h3>
 
-<p>Identifiers use only ASCII letters and digits, and, in a small number of cases
-noted below, underscores and very rarely (when required by frameworks like
-Angular) dollar signs.</p>
+<p>标志符中只能使用ASCII字符和数字，在下面所列的少数情况下可以使用下划线和美元符号。</p>
 
-<p>Give as descriptive a name as possible, within reason. Do not worry about saving
-horizontal space as it is far more important to make your code immediately
-understandable by a new reader. Do not use abbreviations that are ambiguous or
-unfamiliar to readers outside your project, and do not abbreviate by deleting
-letters within a word.</p>
+<p>标志符命名尽量是自描述的。不要考虑缩短命名以节省空间，让其他人能够迅速理解代码要重要的多。
+  不要使用项目外其他人不理解或者不熟悉的缩写，不要以删除单词中间字符的方式进行缩写。</p>
 
-<pre><code class="language-js prettyprint">priceCountReader      // No abbreviation.
-numErrors             // "num" is a widespread convention.
-numDnsConnections     // Most people know what "DNS" stands for.
+<pre><code class="language-js prettyprint">priceCountReader      // 不要使用缩写
+numErrors             // "num" 是广泛使用的惯例用法
+numDnsConnections     // 大部分人都明白Dns的含义
 </code></pre>
 
-<p>Illegal:</p>
+<p>不规范用法：</p>
 
-<pre><code class="language-js prettyprint badcode">n                     // Meaningless.
-nErr                  // Ambiguous abbreviation.
-nCompConns            // Ambiguous abbreviation.
-wgcConnections        // Only your group knows what this stands for.
-pcReader              // Lots of things can be abbreviated "pc".
-cstmrId               // Deletes internal letters.
-kSecondsPerDay        // Do not use Hungarian notation.
+<pre><code class="language-js prettyprint badcode">n                     // 缺乏语义
+nErr                  // 语义模糊的缩写
+nCompConns            // 语义模糊的缩写
+wgcConnections        // 只有自己项目组成员明白其含义
+pcReader              // pc可以代表许多含义
+cstmrId               // 删除中间字符
+kSecondsPerDay        // 不要使用匈牙利命名法
 </code></pre>
 
 <h3 id="naming-rules-by-identifier-type">6.2 Rules by identifier type</h3>
 
-<h4 id="naming-package-names">6.2.1 Package names</h4>
+<h4 id="naming-package-names">6.2.1 Package命名</h4>
 
-<p>Package names are all <code>lowerCamelCase</code>. For example,
-<code>my.exampleCode.deepSpace</code>, but not <code class="badcode">my.examplecode.deepspace</code> or <code class="badcode">my.example_code.deep_space</code>.</p>
+<p>Package统一使用小驼峰法命名，例如使用<code>my.exampleCode.deepSpace</code>，
+  不要使用<code class="badcode">my.examplecode.deepspace</code>或者<code class="badcode">my.example_code.deep_space</code>。</p>
 
-<h4 id="naming-class-names">6.2.2 Class names</h4>
+<h4 id="naming-class-names">6.2.2 类命名</h4>
 
-<p>Class, interface, record, and typedef names are written in <code>UpperCamelCase</code>.
-Unexported classes are simply locals: they are not marked <code>@private</code> and
-therefore are not named with a trailing underscore.</p>
+<p>类、接口使用大驼峰命名法。局部的但不是私有的类称为非导出类（unexported classes），这些类不会添加<code>@private</code>注解，因此其名字也不需要以下划线结尾。</p>
 
-<p>Type names are typically nouns or noun phrases. For example, <code>Request</code>,
-<code>ImmutableList</code>, or <code>VisibilityMode</code>.  Additionally, interface names may
-sometimes be adjectives or adjective phrases instead (for example, <code>Readable</code>).</p>
+<p>类型名一般是名词或者名词短语，例如<code>Request</code>、<code>ImmutableList</code>、<code>VisibilityMode</code>。
+  此外，接口名可以是形容词或者形容词类型的短语，例如<code>Readable</code>。</p>
 
-<h4 id="naming-method-names">6.2.3 Method names</h4>
+<h4 id="naming-method-names">6.2.3 函数名</h4>
 
-<p>Method names are written in <code>lowerCamelCase</code>.  Private methods&#8217; names must end
-with a trailing underscore.</p>
+<p>函数使用小驼峰法命名，私有函数名称以下划线结尾。</p>
 
-<p>Method names are typically verbs or verb phrases. For example, <code>sendMessage</code> or
-<code>stop_</code>.  Getter and setter methods for properties are never required, but if
-they are used they should be named <code>getFoo</code> (or optionally <code>isFoo</code> or <code>hasFoo</code>
-for booleans), or <code>setFoo(value)</code> for setters.</p>
+<p>方法名一般是动词或动词短语，例如<code>sendMessage</code>或者<code>stop_</code>。
+  函数的getter和setter方法不是必要的，如果有的话应该使用<code>getFoo</code>和<code>setFoo(value)</code>的形式。</p>
 
-<p>Underscores may also appear in JsUnit test method names to separate logical
-components of the name. One typical pattern is <code>test&lt;MethodUnderTest&gt;_&lt;state&gt;</code>,
-for example <code>testPop_emptyStack</code>. There is no One Correct Way to name test
-methods.</p>
+<p>下划线也可以在测试用例名称中用于分隔名称的不同部分，一种典型用法是<code>test&lt;MethodUnderTest&gt;_&lt;state&gt;</code>，
+  例如<code>testPop_emptyStack</code>>。测试用例命名没有统一的方法。</p>
 
-<h4 id="naming-enum-names">6.2.4 Enum names</h4>
+<h4 id="naming-enum-names">6.2.4 枚举命名</h4>
 
-<p>Enum names are written in <code>UpperCamelCase</code>, similar to classes, and should
-generally be singular nouns.  Individual items within the enum are named in
-<code>CONSTANT_CASE</code>.</p>
+<p>枚举使用大驼峰命名法。，一般使用单个名词。枚举元素参照常量命名。</p>
 
-<h4 id="naming-constant-names">6.2.5 Constant names</h4>
+<h4 id="naming-constant-names">6.2.5 常量命名</h4>
 
-<p>Constant names use <code>CONSTANT_CASE</code>: all uppercase letters, with words separated
-by underscores. There is no reason for a constant to be named with a trailing
-underscore, since private static properties can be replaced by (implicitly
-private) module locals.</p>
+<p>常量采用大写常量命名方式（CONSTANT_CASE）：所有字符大写，使用下划线连接多个单词。不需要使用尾下划线，因为静态私有属性可以使用模块局部常量代替。</p>
 
-<h5 id="naming-definition-of-constant">6.2.5.1 Definition of &#8220;constant&#8221;</h5>
+<h5 id="naming-definition-of-constant">6.2.5.1 常量定义 of &#8220;constant&#8221;</h5>
 
-<p>Every constant is a <code>@const</code> static property or a module-local <code>const</code>
-declaration, but not all <code>@const</code> static properties and module-local <code>const</code>s
-are constants. Before choosing constant case, consider whether the field really
-feels like a <em>deeply immutable</em> constant. For example, if any of that instance's
-observable state can change, it is almost certainly not a constant. Merely
-intending to never mutate the object is generally not enough.</p>
+<p>常量是添加<code>@const</code>注解的静态属性或者模块局部的<code>const</code>声明，但不是所有这些用法都是常量。
+  能否作为常量的原则是其是否是深度不变的（deeply immutable）。例如如果一个实例的任何一个可观测状态可能发生变化，那么它就不是常量。
+  仅仅不修改对象实例是不够的。</p>
 
-<p>Examples:</p>
+<p>示例：</p>
 
-<pre><code class="language-js prettyprint">// Constants
+<pre><code class="language-js prettyprint">// 常量
 const NUMBER = 5;
 /** @const */ exports.NAMES = ImmutableList.of('Ed', 'Ann');
 /** @enum */ exports.SomeEnum = { ENUM_CONSTANT: 'value' };
 
-// Not constants
+// 非常量
 let letVariable = 'non-const';
 class MyClass { constructor() { /** @const */ this.nonStatic = 'non-static'; } };
 /** @type {string} */ MyClass.staticButMutable = 'not @const, can be reassigned';
@@ -1409,86 +1388,62 @@ const Foo = goog.require('my.Foo');  // mirrors imported name
 const logger = log.getLogger('loggers.are.not.immutable');
 </code></pre>
 
-<p>Constants&#8217; names are typically nouns or noun phrases.</p>
+<p>常量名一般是名词或者名词短语></p>
 
-<h5 id="naming-local-aliases">6.2.5.1 Local aliases</h5>
+<h5 id="naming-local-aliases">6.2.5.1 本地别名</h5>
 
-<p>Local aliases should be used whenever they improve readability over
-fully-qualified names.  Follow the same rules as <code>goog.require</code>s
-(<a href="#file-goog-require">??</a>), maintaining the last part of the aliased name.
-Aliases may also be used within functions.  Aliases must be <code>const</code>.</p>
+<p>常使用本地别名代替完整以增强可读性。本地别名命名参照<code>goog.require</code>s
+（<a href="#file-goog-require">??</a>），一般使用原名称最后一部分作为别名。别名必须使用<code>const</code>声明。</p>
 
-<p>Examples:</p>
+<p>示例：</p>
 
 <pre><code class="language-js prettyprint">const staticHelper = importedNamespace.staticHelper;
 const CONSTANT_NAME = ImportedClass.CONSTANT_NAME;
 const {assert, assertInstanceof} = asserts;
 </code></pre>
 
-<h4 id="naming-non-constant-field-names">6.2.6 Non-constant field names</h4>
+<h4 id="naming-non-constant-field-names">6.2.6 非常量字段名</h4>
 
-<p>Non-constant field names (static or otherwise) are written in <code>lowerCamelCase</code>,
-with a trailing underscore for private fields.</p>
+<p>非常量字段名（无论是否静态）使用小驼峰命名法，私有字段以下划线结尾。</p>
 
-<p>These names are typically nouns or noun phrases. For example, <code>computedValues</code>
-or <code>index_</code>.</p>
+<p>字段名一般是名词或者名词短语，例如<code>computedValues</code>或者<code>index_</code>。</p>
 
-<h4 id="naming-parameter-names">6.2.7 Parameter names</h4>
+<h4 id="naming-parameter-names">6.2.7 参数名</h4>
 
-<p>Parameter names are written in <code>lowerCamelCase</code>.  Note that this applies even if
-the parameter expects a constructor.</p>
+<p>参数名使用小驼峰命名法。</p>
 
-<p>One-character parameter names should not be used in public methods.</p>
+<p>公开方法参数不能使用单字符参数名。</p>
 
-<p><strong>Exception</strong>: When required by a third-party framework, parameter names may
-begin with a <code>$</code>.  This exception does not apply to any other identifiers
-(e.g. local variables or properties).</p>
+<p><strong>例外</strong>：如果第三方框架需要，参数名可以以<code>$</code>开头。</p>
 
-<h4 id="naming-local-variable-names">6.2.8 Local variable names</h4>
+<h4 id="naming-local-variable-names">6.2.8 局部变量命名</h4>
 
-<p>Local variable names are written in <code>lowerCamelCase</code>, except for module-local
-(top-level) constants, as described above.  Constants in function scopes are
-still named in <code>lowerCamelCase</code>.  Note that lowerCamelCase applies even if the
-variable holds a constructor.</p>
+<p>局部变量使用小驼峰命名法，前面提到的模块顶层局部常量除外。函数内部的常量仍然使用小驼峰命名法。即使变量包含的是构造函数，也仍然使用小驼峰法命名。</p>
 
-<h4 id="naming-template-parameter-names">6.2.9 Template parameter names</h4>
+<h4 id="naming-template-parameter-names">6.2.9 模板参数命名</h4>
 
-<p>Template parameter names should be concise, single-word or single-letter
-identifiers, and must be all-caps, such as <code>TYPE</code> or <code>THIS</code>.</p>
+<p>模板参数命名应该简洁，一般是单个单词或者单字符，且全大写，例如<code>TYPE</code>或者<code>THIS</code>。</p>
 
 <h3 id="naming-camel-case-defined">6.3 Camel case: defined</h3>
 
-<p>Sometimes there is more than one reasonable way to convert an English phrase
-into camel case, such as when acronyms or unusual constructs like <q>IPv6</q> or
-<q>iOS</q> are present. To improve predictability, Google Style specifies the
-following (nearly) deterministic scheme.</p>
+<p>对于首字母缩略词等情况（例如<q>IPv6</q>或者<q>iOS</q>）来说，没有确定的方式将其转换为驼峰式写法。为增强可预测性，本代码规范制定了下列转换方法。以</p>
 
-<p>Beginning with the prose form of the name:</p>
+<p>转换规则以名称的普通可读文本形式作为输入：</p>
 
 <ol>
-<li>Convert the phrase to plain ASCII and remove any apostrophes. For example,
-<q>M&#252;ller's algorithm</q> might become <q>Muellers algorithm</q>.</li>
-<li>Divide this result into words, splitting on spaces and any remaining
-punctuation (typically hyphens).
+<li>将其转换为普通ASCII，移除单引号。例如，<q>M&#252;ller's algorithm</q>会被转换<q>Muellers algorithm</q>。</li>
+<li>根据空格、连字符或其他标点符号将结果分隔为多个词。
 <ol>
-<li>Recommended: if any word already has a conventional camel case
-appearance in common usage, split this into its constituent parts (e.g.,
-<q>AdWords</q> becomes <q>ad words</q>). Note that a word such as <q>iOS</q> is not
-really in camel case per se; it defies any convention, so this
-recommendation does not apply.</li>
+<li>建议：如果一个词已经有常见的驼峰写法，将其分割为多个连续的部分（例如将<q>AdWords</q>分割为<q>ad words</q>）。
+  注意有些词本身并不属于驼峰写法，例如<q>iOS</q>，这种写法不符合任何管理，因此不适用该建议。</li>
 </ol></li>
-<li>Now lowercase everything (including acronyms), then uppercase only the first
-character of:
-<ol>
-<li>&#8230; each word, to yield upper camel case, or</li>
-<li>&#8230; each word except the first, to yield lower camel case</li>
-</ol></li>
-<li>Finally, join all the words into a single identifier.</li>
+<li>全部转换为小写，然后对于大驼峰法将所有单词的首字符大写，对于小驼峰法将除第一个之外单词首字符大写。
+<li>最后将所有单词拼接为一个标志符。</li>
 </ol>
 
-<p>Note that the casing of the original words is almost entirely disregarded.</p>
+<p>注意以上过程几乎完全不考虑名称的原始大小写。</p>
 
-<p>Examples:</p>
+<p>示例：</p>
 
 <table>
 <thead>
@@ -1528,9 +1483,9 @@ character of:
 </tbody>
 </table>
 
-<p>*Acceptable, but not recommended.</p>
+<p>*可接受，单不推荐。</p>
 
-<p>Note: Some words are ambiguously hyphenated in the English language: for example <q>nonempty</q> and <q>non-empty</q> are both correct, so the method names checkNonempty and checkNonEmpty are likewise both correct.</p>
+<p>注意：英语中有些词可使用也可不用连字符，例如<q>nonempty</q>和<q>non-empty</q>都是正确的，因此函数名checkNonempty和checkNonEmpty也都是合法的。</p>
 
 <h2 id="jsdoc">7 JSDoc</h2>
 
