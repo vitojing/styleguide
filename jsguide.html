@@ -10,42 +10,14 @@
 </head>
 <body onload="initStyleGuide();">
 <div id="content">
-<h1>Google JavaScript 代码规范</h1>
+<h1>JavaScript 代码规范</h1>
 <h2 id="introduction">1 介绍</h2>
 
-<p>本文档定义了Google Javascript语言的编码规范，一个Javascript源代码只有符合本文当所有规范才算符合Google 编码规范。</p>
-<p>This document serves as the complete definition of Google’s coding standards for source code in the JavaScript programming language. A JavaScript source file is described as being in Google Style if and only if it adheres to the rules herein.</p>
+<p>本文档定义了Javascript语言的编码规范，一个Javascript源代码只有符合本文当所有规范才算符合编码规范。</p>
 
 <p>与其他语言类似，代码规范不仅包含影响美感的代码格式，也包含其他规约和编码标准。然而，此文当侧重于一般情况下我们必须遵守的规则，而避免提出一些可能难以执行的建议。</p>
-<p>Like other programming style guides, the issues covered span not only aesthetic
-issues of formatting, but other types of conventions or coding standards as
-well. However, this document focuses primarily on the hard-and-fast rules that
-we follow universally, and avoids giving advice that isn't clearly enforceable
-(whether by human or tool). </p>
 
-<h3 id="terminology-notes">1.1 术语说明</h3>
-
-<p>In this document, unless otherwise clarified:</p>
-
-<ol>
-<li><p>The term <em>comment</em> always refers to <em>implementation</em> comments. We do not use
-the phrase <q>documentation comments</q>, instead using the common term &#8220;JSDoc&#8221;
-for both human-readable text and machine-readable annotations within
-<code>/** &#8230; */</code>.</p></li>
-<li><p>This Style Guide uses <a href="http://tools.ietf.org/html/rfc2119">RFC 2119</a> terminology when using the phrases <em>must</em>,
-<em>must not</em>, <em>should</em>, <em>should not</em>, and <em>may</em>.  The terms <em>prefer</em> and
-<em>avoid</em> correspond to <em>should</em> and <em>should not</em>, respectively.  Imperative
-and declarative statements are prescriptive and correspond to <em>must</em>.</p></li>
-</ol>
-
-<p>Other <q>terminology notes</q> will appear occasionally throughout the document.</p>
-
-<h3 id="guide-notes">1.2 Guide notes</h3>
-
-<p>Example code in this document is <strong>non-normative</strong>. That is, while the examples
-are in Google Style, they may not illustrate the <em>only</em> stylish way to represent
-the code. Optional formatting choices made in examples must not be enforced as
-rules.</p>
+<p>所有示例中的写法并不是唯一符合规范的写法，不需要将示例当作规则去执行。</p>
 
 <h2 id="source-file-basics">2 源文件基本要求</h2>
 
@@ -117,118 +89,60 @@ rules.</p>
 <p>一个文件由以下几部分组成：</p>
 
 <ol>
-<li>许可证活版权信息，如果有的话</li>
 <li>文件概要信息</li>
+<li>依赖声明</li>
 <li>功能代码</li>
 </ol>
 
-<p><strong>每部分之间留一个空行</p>
-
-<h3 id="file-copyright">3.1 许可证活版权信息，如果有的话</h3>
-
-<p></p>
-
-<h3 id="file-fileoverview">3.2 文件概要信息</h3>
-
-<p>格式参照 <a href="#jsdoc-top-file-level-comments">??</a>。</p>
-
-<h3 id="file-goog-module">3.3 <code>goog.module</code> 语句</h3>
-
-<p>所有文件必须包含一个 <code>goog.module</code> 语句。该语句独占一行，不得缩进，不受每行最多80字符的限制。</p>
-
-<p>示例</p>
-
-<pre><code class="language-js prettyprint">goog.module('search.urlHistory.UrlHistoryService');
-</code></pre>
-
-<h4 id="naming-hierarchy">3.3.1 层级结构</h4>
-
-<p>模块命名空间之间不允许存在直接父子关系。</p>
-
-<p>不规范写法：</p>
-
-<pre><code class="language-js prettyprint badcode">goog.module('foo.bar');   // 'foo.bar.qux' 才是合适的命名
-goog.module('foo.bar.baz');
-</code></pre>
-
-<p>目录结构应该对应到命名空间结构。这也意味着父命名空间需要知道所有的子命名空间。</p>
-
-<h4 id="file-set-test-only">3.3.2 <code>goog.setTestOnly</code></h4>
-
-<p><code>goog.module</code> 语句后面可以紧跟一个 goog.setTestOnly() 调用</p>
-
-<h4 id="file-declare-legacy-namespace">3.3.3 <code>goog.module.declareLegacyNamespace</code></h4>
-
-<p><code>goog.module</code> 语句后面可以紧跟一个 <code>goog.module.declareLegacyNamespace()</code>调用。尽量减少
-<code>goog.module.declareLegacyNamespace()</code> 的使用</p>
-
-<p>示例:</p>
-
-<pre><code class="language-js prettyprint">goog.module('my.test.helpers');
-goog.module.declareLegacyNamespace();
-goog.setTestOnly();
-</code></pre>
-
-<p><code>goog.module.declareLegacyNamespace</code> exists to ease the transition from
-traditional object hierarchy-based namespaces but comes with some naming
-restrictions. As the child module name must be created after the parent
-namespace, this name <strong>must not</strong> be a child or parent of any other
-<code>goog.module</code> (for example, <code>goog.module('parent');</code> and
-<code>goog.module('parent.child');</code> cannot both exist safely, nor can
-<code>goog.module('parent');</code> and <code>goog.module('parent.child.grandchild')</code>).</p>
-
-<h4 id="file-es6-modules">3.3.4 ES6 模块</h4>
-
-<p>不要使用 ES6 模块 (即 <code>export</code> 和 <code>import</code> 关键词)，因为其语义尚未最终确定。注意待其语义标准化之后，该规则会重新进行评估。</p>
-
-<h3 id="file-goog-require">3.4 <code>goog.require</code> 语句</h3>
-
-<p>使用 <code>goog.require</code> 语句导入其他模块，模块导入语句应该作为一组紧跟在模块语句之后。每个 <code>goog.require</code> 被赋值到一个不可变别名上，或者被解构为一组不可变别名。
-在代码和类型注解上都必须通过这些别名引用导入的依赖模块，模块的全限定名仅用于作为 <code>goog.require</code> 的参数。别名应该尽量与导入模块模块名按点分隔的最后部分保持一致，
-当然也可以为了避免歧义、增强可读性也可以调整。<code>goog.require</code>不能在文件其他地方再次使用。
-
-<p>如果仅为了副作用而导入一个模块，可以不赋值，但该模块的完整限定名不能在文件其他地方出现。同时需要通过注释说明为何需要该模块，并且禁止编译器警告。</p>
+<p>每部分之间留一个空行</p>
 
 
+<h3 id="file-fileoverview">3.1 文件概要信息</h3>
 
-<p>模块导入语句排序规则：所有带赋值的语句出现在前面，按照别名字符序排序，解构导入语句也如此。最后是其他独立的 <code>goog.require</code> 调用（通常为了其副作用而导入）。</p>
+<p>格式参照JSDoc相关用法。</p>
+
+<h3 id="file-dependency">3.2 依赖声明</h3>
+
+<p>所有对其他模块的依赖必须在此处统一声明，声明方式参照<a href="#module-pattern">??</a></p>
+
+<p>每个引入的模块可以被赋值到一个不可变别名上，或者被解构为一组不可变别名。别名应该尽量与导入模块的完整限定名称的最后部分保持一致，当然也可以为了避免歧义、增强可读性也可以调整。</p>
+
+<p>如果仅为了副作用而导入一个模块，可以不赋值，但需通过注释说明为何需要该模块，并且禁止编译器警告。</p>
+
+<p>模块导入语句排序规则：所有带赋值的语句出现在前面，按照别名字符序排序，解构导入语句也如此。</p>
 
 <p class="tip">提示：不需要记住并且手工执行这条规则，可以使用 IDE 进行 require 顺序检测。</p>
 
-<p>goog.require 代码行禁止换行，可不遵循单行80字符限制。</p>
+<p>模块引入代码行可不遵循单行80字符限制。</p>
 
 <p>示例：</p>
 
-<pre><code class="language-js prettyprint">const MyClass = goog.require('some.package.MyClass');
-const NsMyClass = goog.require('other.ns.MyClass');
-const googAsserts = goog.require('goog.asserts');
-const testingAsserts = goog.require('goog.testing.asserts');
-const than80columns = goog.require('pretend.this.is.longer.than80columns');
-const {clear, forEach, map} = goog.require('goog.array');
+<pre><code class="language-js prettyprint">const MyClass = require('some/package/MyClass');
+const NsMyClass = require('other/ns/MyClass');
+const googAsserts = require('goog/asserts');
+const testingAsserts = require('goog/testing/asserts');
+const than80columns = require('pretend/this/is/longer/than80columns');
+const {clear, forEach, map} = require('goog/array');
 /** @suppress {extraRequire} Initializes MyFramework. */
-goog.require('my.framework.initialization');
+require('my/framework/initialization');
 </code></pre>
 
 <p>不规范写法：</p>
 
-<pre><code class="language-js badcode prettyprint">const randomName = goog.require('something.else'); // name must match
+<pre><code class="language-js badcode prettyprint">const randomName = require('something/else'); // name must match
 
 const {clear, forEach, map} = // don't break lines
-    goog.require('goog.array');
+    require('goog/array');
 
 function someFunction() {
-  const alias = goog.require('my.long.name.alias'); // must be at top level
+  const alias = require('my/long/name/alias'); // must be at top level
   // &#8230;
 }
 </code></pre>
 
-<h4 id="file-goog-forward-declare">3.4.1 <code>goog.forwardDeclare</code></h4>
-
-<p><code>goog.forwardDeclare</code> 语句不常用，可用于打破循环依赖或者引用延迟加载代码。此类语句统一放到 <code>goog.require</code> 语句后面，代码规范同<code>goog.require</code> 语句。</p>
-
 <h3 id="file-implementation">3.5 代码实现</h3>
 
-<p>代码实现位于依赖声明语句之后，于依赖声明之间至少使用一个空行分隔。</p>
+<p>代码实现位于依赖声明语句之后，之间至少使用一个空行分隔。</p>
 
 <p>这部分可能包含任何模块局部声明（例如常量，变量，类，函数等），以及任何导出符号。</p>
 
@@ -413,14 +327,14 @@ class Frobnicator {
 });
 
 some.reallyLongFunctionCall(arg1, arg2, arg3)
-    .thatsWrapped()
-    .then((result) =&gt; {
-      // Indent the function body +2 relative to the indentation depth
-      // of the '.then()' call.
-      if (result) {
-        result.use();
-      }
-    });
+  .thatsWrapped()
+  .then((result) =&gt; {
+    // Indent the function body +2 relative to the indentation depth
+    // of the '.then()' call.
+    if (result) {
+      result.use();
+    }
+  });
 </code></pre>
 
 <h4 id="formatting-switch-statements">4.2.5 Switch 语句</h4>
@@ -429,7 +343,7 @@ some.reallyLongFunctionCall(arg1, arg2, arg3)
 
 <p>每个 case 标签之后换行，对应标签的处理代码参照块结构进行缩进，如果需要块级作用域可以使用大括号包括处理代码。</p>
 
-<p>break 语句和下一个 case 语句之间可以留一个空行（可选）</p>
+<p>break 语句和下一个 case 语句之间可以留一个空行（可选）。</p>
 
 <p>示例：</p>
 
@@ -465,15 +379,14 @@ some.reallyLongFunctionCall(arg1, arg2, arg3)
 
 <ol>
 <li>不可能遵守字符限制的情况，例如一个很长的 URL 字符串。</li>
-<li><code>goog.module</code> 以及 <code>goog.require</code> 语句（<a href="#file-goog-module">??</a> 以及
-<a href="#file-goog-require">??</a>)）。/li>
+<li><code>CommonJS require</code>、<code>import</code> 等不适合换行的语句。/li>
 </ol>
 
 <h3 id="formatting-line-wrapping">4.5 断行</h3>
 
 <p><strong>术语说明</strong>：<em>断行</em>是指将一个表达式拆分为多行。</p>
 
-<p>没有完备的，确切的的方法告诉你在各种情况下如何断行。同一段代码往往有多种断行方式。</p>
+<p>没有完备的，确定的的方法告诉你在各种情况下如何断行。同一段代码往往有多种断行方式。</p>
 
 <p>注意：尽管断行一般是为了不超出单行字符数的限制，但开发人员也可以出于其他原因自行决定断行。</p>
 
@@ -510,16 +423,14 @@ some.reallyLongFunctionCall(arg1, arg2, arg3)
 </ol>
 
 <blockquote>
-<p>注意：断行的主要目的是使代码清晰易读。The primary goal for line wrapping is to have clear code, not
-necessarily code that fits in the smallest number of lines.</p>
+<p>注意：断行的主要目的是使代码清晰易读，不要为了最小化代码行而修改代码。</p>
 </blockquote>
 
 <h4 id="formatting-indent">4.5.2 延续行缩进至少四个空格</h4>
 
-<p>发生断行时，除第一行的其他行（所谓延续行）相对于第一行至少缩进四个空格，unless it falls under the rules of
-block indentation.</p>
+<p>发生断行时，除第一行的其他行（所谓延续行）相对于第一行至少缩进四个空格。</p>
 
-<p>右多个延续行时，每行的缩进可能不同。一般来说，较深语义层次的代码行缩进更多，缩进量都是4的整倍数。两行缩进相同当且仅当他们的语义层次相同。</p>
+<p>有多个延续行时，每行的缩进可能不同。一般来说，较深语义层次的代码行缩进更多，缩进量都是4的整倍数。两行缩进相同当且仅当他们的语义层次相同。</p>
 
 <p><a href="#formatting-horizontal-alignment">??</a> 描述了通过使用不同个数的空格来对齐上下行的特定词句的情况，这是不推荐的。</p>
 
@@ -543,22 +454,22 @@ block indentation.</p>
 
 <h4 id="formatting-horizontal-whitespace">4.6.2 行内空白</h4>
 
-<p>行内空格的使用可以分为三种情况：行首、行尾、行内。行首空白（也就是缩进）其他章节已讲过，行为空白是不允许的。</p>
+<p>行内空格的使用可以分为三种情况：行首、行尾、行内。行首空白（也就是缩进）其他章节已讲过，行尾空白是不允许的。</p>
 
 <p>除了语言本身要求或其他规范要求，以及字面量、注释、JSDoc之外，空白字符<em>仅</em>在以下情况下使用：</p>
 
 <ol>
-<li>分隔保留字（例如 <code>if</code>, <code>for</code>, <code>catch</code>）和之后的左括号（<code>(</code>）。</li>
-<li>分隔保留字（例如 <code>else</code>, <code>catch</code>）和之前的右大括号（<code>}</code>）。</li>
-<li>用于所有左大括号（<code>{</code>）之前，除以下例外情况：
+<li>分隔保留字（例如 <code>if</code>, <code>for</code>, <code>catch</code>）和之后的左括号<code>(</code>。</li>
+<li>分隔保留字（例如 <code>else</code>, <code>catch</code>）和之前的右大括号<code>}</code>。</li>
+<li>用于所有左大括号<code>{</code>之前，除以下例外情况：
 <ol>
-<li>当一个对象字面量作为函数的第一个参数或者数组字面量的第一个元素时（例如 <code>foo({a: [{c: d}]})</code> ），在对象字面量之前添加空格。</li>
-<li>在模板扩展代码中，因为模板语法不允许（例如 <code>abc${1 + 2}def</code> ）。</li>
+<li>当一个对象字面量作为函数的第一个参数或者数组字面量的第一个元素时，例如 <code>foo({a: [{c: d}]})</code>。</li>
+<li>在模板扩展代码中，因为模板语法不允许，例如 <code>abc${1 + 2}def</code>。</li>
 </ol></li>
 <li>在二元或者三元操作符前后。</li>
 <li>在逗号（<code>,</code>）或分号（<code>;</code>）之后。注意这些符号前不允许有空格。</li>
 <li>对象字面量的冒号（<code>:</code>）之后。</li>
-<li>在双斜线（<code>//</code>，行内注释）前后。此处也可以使用多个空格。</li>
+<li>在双斜线（<code>//</code>，行内注释）前后，以及多行注释<code>*</code>符号之后。此处也可以使用多个空格。</li>
 <li>在 JSDoc 起始注释字符之后，以及结束字符前后（例如简短的类型声明或者赋值： <code>this.foo = /** @type
 {number} */ (bar);</code> or <code>function(/** string */ foo) {</code>）。</li>
 </ol>
@@ -586,26 +497,21 @@ block indentation.</p>
 
 <h4 id="formatting-function-arguments">4.6.4 函数参数</h4>
 
-<p>推荐将函数参数与函数名写在同一行。如果超出单行字符限制断行时，必须考虑可读性。可以尽量在80字符处断行以节约空间，也可以每个参数一行增强可读性。应该缩进四个空格。也可以按照括号对齐，但不推荐这种做法。下面是常用的参数断行方式：</p>
+<p>推荐将函数参数与函数名写在同一行。如果超出单行字符限制断行时，必须考虑可读性。可以尽量在80字符处断行以节约空间，也可以每个参数一行增强可读性。应该缩进四个空格。也可以与括号对齐，但不推荐这种做法。下面是常用的参数断行方式：</p>
 
-<pre><code class="language-js prettyprint">// Arguments start on a new line, indented four spaces. Preferred when the
-// arguments don't fit on the same line with the function name (or the keyword
-// "function") but fit entirely on the second line. Works with very long
-// function names, survives renaming without reindenting, low on space.
+<pre><code class="language-js prettyprint">// 参数另起一行，缩进四个空格。适合参数本身可以放到一行，但加上函数名、function关键词就超常的情况。
 doSomething(
     descriptiveArgumentOne, descriptiveArgumentTwo, descriptiveArgumentThree) {
   // &#8230;
 }
 
-// If the argument list is longer, wrap at 80. Uses less vertical space,
-// but violates the rectangle rule and is thus not recommended.
+// 如果参数列表再长的话，在80字符处断行。
 doSomething(veryDescriptiveArgumentNumberOne, veryDescriptiveArgumentTwo,
     tableModelEventHandlerProxy, artichokeDescriptorAdapterIterator) {
   // &#8230;
 }
 
-// Four-space, one argument per line.  Works with long function names,
-// survives renaming, and emphasizes each argument.
+// 四个空格，每个参数一行。
 doSomething(
     veryDescriptiveArgumentNumberOne,
     veryDescriptiveArgumentTwo,
@@ -1102,12 +1008,7 @@ function maybeDoSomething(required, optional = '', node = undefined) {}
 
 <p>不要使用<code>arguments</code>，使用剩余参数。JSDoc中使用<code>...</code>声明剩余参数的类型。
   剩余参数必须是参数列表中的最后一个参数。<code>...</code>和参数名之间不能有空格。不要将其命名为<code>var_args</code>。
-  不要将局部变量或者参数命名为<code>arguments</code>，以免与内置变量混淆。
-  Use a <em>rest</em> parameter instead of accessing <code>arguments</code>. Rest parameters are
-typed with a <code>...</code> prefix in their JSDoc. The rest parameter must be the last
-parameter in the list. There is no space between the <code>...</code> and the parameter
-name.  Do not name the rest parameter <code>var_args</code>. Never name a local variable or
-parameter <code>arguments</code>, which confusingly shadows the built-in name.</p>
+  不要将局部变量或者参数命名为<code>arguments</code>，以免与内置变量混淆。</p>
 
 <p>示例：</p>
 
@@ -1120,13 +1021,9 @@ function variadic(array, ...numbers) {}
 
 <h4 id="features-functions-returns">5.5.6 返回值</h4>
 
-<p>必须在函数JSDoc注释中声明返回值类型，使用<code>@override</code>注解重写相同签名的父类函数时，可以忽略类型声明。</p>
+<p>在函数JSDoc注释中声明返回值类型，使用<code>@override</code>注解重写相同签名的父类函数时，可以忽略类型声明。</p>
 
-<h4 id="features-functions-generics">5.5.7 泛型</h4>
-
-<p>声明泛型函数时，在JSDoc中使用 <code>@template TYPE</code> 进行声明</p>
-
-<h4 id="features-functions-spread-operator">5.5.8 扩展操作符（Spread operator）</h4>
+<h4 id="features-functions-spread-operator">5.5.7 扩展操作符（Spread operator）</h4>
 
 <p>可以在调用函数时使用扩展操作符<code>...</code>。
   需要将数组或可枚举对象解析为可变长参数函数（variadic function）的多个参数时，推荐使用扩展操作符而不是<code>Function.prototype.apply</code>。
@@ -1266,26 +1163,38 @@ return handleTextResponse(response);
 
 <p>不要使用<code>this</code>引用全局对象，<code>eval</code>的上下文，事件（event）关联的对象（target），或者使用<code>call()</code>或者<code>apply()</code>调用的函数。</p>
 
-<h3 id="disallowed-features">5.10 禁止使用的特性</h3>
+<h3 id="module-pattern">5.10 模块化机制</h3>
 
-<h4 id="disallowed-features-with">5.10.1 with</h4>
+<p>在route层代码中使用ES6或者CommonJS模块化机制均可，但用法要统一，不要混用。推荐使用ES6模块化机制。</p>
+
+<p>目前平台上的浏览器代码统一使用webpack提供的模块化能力，webpack支持CommonJS、AMD、ES6标准以及webpack自定义的模块化机制。</p>
+
+<p>推荐使用ES6模块化机制，CommonJS、AMD也可使用，如非必要不要使用webpack自定义的机制。</p>
+
+<p>如果需要代码分割，使用AMD的require机制。</p>
+
+<p>注意：应用对其他应用提供的widget随应用本身发布，其他应用在html中通过script标签引用改widget。为保证执行顺序可靠性，所有widget不允许使用AMD的require机制。</p>
+
+<h3 id="disallowed-features">5.11 禁止使用的特性</h3>
+
+<h4 id="disallowed-features-with">5.11.1 with</h4>
 
 <p>不要使用<code>with</code>关键词，该特性不利于代码可读性，在ES5严格模式中已经被禁止使用。</p>
 
-<h4 id="disallowed-features-dynamic-code-evaluation">5.10.2 动态执行代码</h4>
+<h4 id="disallowed-features-dynamic-code-evaluation">5.11.2 动态执行代码</h4>
 
 <p>不要使用<code>eval</code>或者<code>Function(...string)</code>构造函数（除了用于代码加载工具中），这些特性存在潜在的危险性。</p>
 
-<h4 id="disallowed-features-automatic-semicolon-insertion">5.10.3 自动插入分号</h4>
+<h4 id="disallowed-features-automatic-semicolon-insertion">5.11.3 自动插入分号</h4>
 
 <p>除了函数和类声明之外，所有语句一律以分号结尾。</p>
 
-<h4 id="disallowed-features-non-standard-features">5.10.4 非标准特性</h4>
+<h4 id="disallowed-features-non-standard-features">5.11.4 非标准特性</h4>
 
 <p>不要使用非标准特性，包括已删除的功能（例如<code>WeakMap.clear</code>），尚未标准化的新特性（当前的TC39草案，各阶段提案，或者提出但尚未完成的web标准），
   或者部分浏览器的专利特性。只使用当前ECMA-262或者WHATWG标准中包含的特性。当然专为Node.js或者Chrome扩展所写的代码不受该限制约束。禁止使用非标准语言扩展。</p>
 
-<h4 id="disallowed-features-wrapper-objects">5.10.5 原生类型对象封装</h4>
+<h4 id="disallowed-features-wrapper-objects">5.11.5 原生类型对象封装</h4>
 
 <p>不要在原生类型对象封装（例如<code>Boolean</code>, <code>Number</code>, <code>String</code>,
   <code>Symbol</code>）上使用<code>new</code>操作符，也不要再类型注解中使用原生类型对象封装。</p>
@@ -1304,7 +1213,7 @@ if (x) alert(typeof x);  // alerts 'object' - WAT?
 if (!x) alert(typeof x);  // alerts 'boolean', as expected
 </code></pre>
 
-<h4 id="disallowed-features-modifying-builtin-objects">5.10.6 修改内建对象</h4>
+<h4 id="disallowed-features-modifying-builtin-objects">5.11.6 修改内建对象</h4>
 
 <p>不要修改内建类型，也不要依赖有这种行为的库。</p>
 
@@ -1333,7 +1242,7 @@ cstmrId               // 删除中间字符
 kSecondsPerDay        // 不要使用匈牙利命名法
 </code></pre>
 
-<h3 id="naming-rules-by-identifier-type">6.2 Rules by identifier type</h3>
+<h3 id="naming-rules-by-identifier-type">6.2 标志符类型相关规则</h3>
 
 <h4 id="naming-package-names">6.2.1 Package命名</h4>
 
@@ -1424,7 +1333,7 @@ const {assert, assertInstanceof} = asserts;
 
 <p>模板参数命名应该简洁，一般是单个单词或者单字符，且全大写，例如<code>TYPE</code>或者<code>THIS</code>。</p>
 
-<h3 id="naming-camel-case-defined">6.3 Camel case: defined</h3>
+<h3 id="naming-camel-case-defined">6.3 驼峰法定义</h3>
 
 <p>对于首字母缩略词等情况（例如<q>IPv6</q>或者<q>iOS</q>）来说，没有确定的方式将其转换为驼峰式写法。为增强可预测性，本代码规范制定了下列转换方法。以</p>
 
@@ -1489,795 +1398,7 @@ const {assert, assertInstanceof} = asserts;
 
 <h2 id="jsdoc">7 JSDoc</h2>
 
-<p><a href="https://developers.google.com/closure/compiler/docs/js-for-compiler">JSDoc</a> is used on all classes, fields, and methods.</p>
-
-<h3 id="jsdoc-general-form">7.1 General form</h3>
-
-<p>The basic formatting of JSDoc blocks is as seen in this example:</p>
-
-<pre><code class="language-js prettyprint">/**
- * Multiple lines of JSDoc text are written here,
- * wrapped normally.
- * @param {number} arg A number to do something to.
- */
-function doSomething(arg) { &#8230; }
-</code></pre>
-
-<p>or in this single-line example:</p>
-
-<pre><code class="language-js prettyprint">/** @const @private {!Foo} A short bit of JSDoc. */
-this.foo_ = foo;
-</code></pre>
-
-<p>If a single-line comment overflows into multiple lines, it must use the
-multi-line style with <code>/**</code> and <code>*/</code> on their own lines.</p>
-
-<p>Many tools extract metadata from JSDoc comments to perform code validation and
-optimization.  As such, these comments <strong>must</strong> be well-formed.</p>
-
-<h3 id="jsdoc-markdown">7.2 Markdown</h3>
-
-<p>JSDoc is written in Markdown, though it may include HTML when necessary.</p>
-
-<p>Note that tools that automatically extract JSDoc (e.g. <a href="https://github.com/jleyba/js-dossier">JsDossier</a>) will often
-ignore plain text formatting, so if you did this:</p>
-
-<pre><code class="language-js prettyprint badcode">/**
- * Computes weight based on three factors:
- *   items sent
- *   items received
- *   last timestamp
- */
-</code></pre>
-
-<p>it would come out like this:</p>
-
-<pre><code>Computes weight based on three factors: items sent items received last timestamp
-</code></pre>
-
-<p>Instead, write a Markdown list:</p>
-
-<pre><code class="language-js prettyprint">/**
- * Computes weight based on three factors:
- *  - items sent
- *  - items received
- *  - last timestamp
- */
-</code></pre>
-
-<h3 id="jsdoc-tags">7.3 JSDoc tags</h3>
-
-<p>Google style allows a subset of JSDoc tags.  See
-<a href="#appendices-jsdoc-tag-reference">??</a> for the complete list.  Most tags must
-occupy their own line, with the tag at the beginning of the line.</p>
-
-<p>Illegal:</p>
-
-<pre><code class="language-js prettyprint badcode">/**
- * The "param" tag must occupy its own line and may not be combined.
- * @param {number} left @param {number} right
- */
-function add(left, right) { ... }
-</code></pre>
-
-<p>Simple tags that do not require any additional data (such as <code>@private</code>,
-<code>@const</code>, <code>@final</code>, <code>@export</code>) may be combined onto the same line, along with an
-optional type when appropriate.</p>
-
-<pre><code class="language-js prettyprint">/**
- * Place more complex annotations (like "implements" and "template")
- * on their own lines.  Multiple simple tags (like "export" and "final")
- * may be combined in one line.
- * @export @final
- * @implements {Iterable&lt;TYPE&gt;}
- * @template TYPE
- */
-class MyClass {
-  /**
-   * @param {!ObjType} obj Some object.
-   * @param {number=} num An optional number.
-   */
-  constructor(obj, num = 42) {
-    /** @private @const {!Array&lt;!ObjType|number&gt;} */
-    this.data_ = [obj, num];
-  }
-}
-</code></pre>
-
-<p>There is no hard rule for when to combine tags, or in which order, but be
-consistent.</p>
-
-<p>For general information about annotating types in JavaScript see
-<a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">Annotating JavaScript for the Closure Compiler</a> and <a href="https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System">Types in the Closure Type
-System</a>.</p>
-
-<h3 id="jsdoc-line-wrapping">7.4 Line wrapping</h3>
-
-<p>Line-wrapped block tags are indented four spaces.  Wrapped description text may
-be lined up with the description on previous lines, but this horizontal
-alignment is discouraged.</p>
-
-<pre><code class="language-js prettyprint">/**
- * Illustrates line wrapping for long param/return descriptions.
- * @param {string} foo This is a param with a description too long to fit in
- *     one line.
- * @return {number} This returns something that has a description too long to
- *     fit in one line.
- */
-exports.method = function(foo) {
-  return 5;
-};
-</code></pre>
-
-<p>Do not indent when wrapping a <code>@fileoverview</code> description.</p>
-
-<h3 id="jsdoc-top-file-level-comments">7.5 Top/file-level comments</h3>
-
-<p>A file may have a top-level file overview. A copyright notice , author information, and
-default <a href="#jsdoc-visibility-annotations">visibility level</a> are optional.  File overviews are generally recommended whenever a
-file consists of more than a single class definition. The top level comment is
-designed to orient readers unfamiliar with the code to what is in this file. If
-present, it may provide a description of the file's contents and any
-dependencies or compatibility information. Wrapped lines are not indented.</p>
-
-<p>Example:</p>
-
-<pre><code class="language-js prettyprint">/**
- * @fileoverview Description of file, its uses and information
- * about its dependencies.
- * @package
- */
-</code></pre>
-
-<h3 id="jsdoc-class-comments">7.6 Class comments</h3>
-
-<p>Classes, interfaces and records must be documented with a description and any
-template parameters, implemented interfaces, visibility, or other appropriate
-tags. The class description should provide the reader with enough information to
-know how and when to use the class, as well as any additional considerations
-necessary to correctly use the class. Textual descriptions may be omitted on the
-constructor. <code>@constructor</code> and <code>@extends</code> annotations are not used with the
-<code>class</code> keyword unless the class is being used to declare an <code>@interface</code> or
-it extends a generic class.</p>
-
-<pre><code class="language-js prettyprint">/**
- * A fancier event target that does cool things.
- * @implements {Iterable&lt;string&gt;}
- */
-class MyFancyTarget extends EventTarget {
-  /**
-   * @param {string} arg1 An argument that makes this more interesting.
-   * @param {!Array&lt;number&gt;} arg2 List of numbers to be processed.
-   */
-  constructor(arg1, arg2) {
-    // ...
-  }
-};
-
-/**
- * Records are also helpful.
- * @extends {Iterator&lt;TYPE&gt;}
- * @record
- * @template TYPE
- */
-class Listable {
-  /** @return {TYPE} The next item in line to be returned. */
-  next() {}
-}
-</code></pre>
-
-<h3 id="jsdoc-enum-and-typedef-comments">7.7 Enum and typedef comments</h3>
-
-<p>Enums and typedefs must be documented.  Public enums and typedefs must have a
-non-empty description.  Individual enum items may be documented with a JSDoc
-comment on the preceding line.</p>
-
-<pre><code class="language-js prettyprint">/**
- * A useful type union, which is reused often.
- * @typedef {!Bandersnatch|!BandersnatchType}
- */
-let CoolUnionType;
-
-
-/**
- * Types of bandersnatches.
- * @enum {string}
- */
-const BandersnatchType = {
-  /** This kind is really frumious. */
-  FRUMIOUS: 'frumious',
-  /** The less-frumious kind. */
-  MANXOME: 'manxome',
-};
-</code></pre>
-
-<p>Typedefs are useful for defining short record types, or aliases for unions,
-complex functions, or generic types.
-Typedefs should be avoided for record types with many fields, since they do not
-allow documenting individual fields, nor using templates or recursive
-references.
-For large record types, prefer <code>@record</code>.</p>
-
-<h3 id="jsdoc-method-and-function-comments">7.8 Method and function comments</h3>
-
-<p>Parameter and return types must be documented. The <code>this</code> type should be
-documented when necessary. Method, parameter, and return descriptions (but not
-types) may be omitted if they are obvious from the rest of the method&#8217;s JSDoc or
-from its signature. Method descriptions should start with a sentence written in
-the third person declarative voice.  If a method overrides a superclass method,
-it must include an <code>@override</code> annotation.  Overridden methods must include all
-<code>@param</code> and <code>@return</code> annotations if any types are refined, but should omit
-them if the types are all the same.</p>
-
-<pre><code class="language-js prettyprint">/** This is a class. */
-class SomeClass extends SomeBaseClass {
-  /**
-   * Operates on an instance of MyClass and returns something.
-   * @param {!MyClass} obj An object that for some reason needs detailed
-   *     explanation that spans multiple lines.
-   * @param {!OtherClass} obviousOtherClass
-   * @return {boolean} Whether something occurred.
-   */
-  someMethod(obj, obviousOtherClass) { ... }
-
-  /** @override */
-  overriddenMethod(param) { ... }
-}
-
-/**
- * Demonstrates how top-level functions follow the same rules.  This one
- * makes an array.
- * @param {TYPE} arg
- * @return {!Array&lt;TYPE&gt;}
- * @template TYPE
- */
-function makeArray(arg) { ... }
-</code></pre>
-
-
-
-<p>Anonymous functions do not require JSDoc, though parameter types may be specified inline if the automatic type inference is insufficient.</p>
-
-<pre><code class="language-js prettyprint">promise.then(
-    (/** !Array&lt;number|string&gt; */ items) =&gt; {
-      doSomethingWith(items);
-      return /** @type {string} */ (items[0]);
-    });
-</code></pre>
-
-<h3 id="jsdoc-property-comments">7.9 Property comments</h3>
-
-<p>Property types must be documented. The description may be omitted for private
-properties, if name and type provide enough documentation for understanding the
-code.</p>
-
-<p>Publicly exported constants are commented the same way as properties.  Explicit
-types may be omitted for <code>@const</code> properties initialized from an expression with
-an obviously known type.</p>
-
-<p>Tip: A <code>@const</code> property&#8217;s type can be considered &#8220;obviously known&#8221; if it is
-assigned directly from a constructor parameter with a declared type, or directly
-from a function call with a declared return type.  Non-const properties and
-properties assigned from more complex expressions should have their types
-declared explicitly.</p>
-
-<pre><code class="language-js prettyprint">/** My class. */
-class MyClass {
-  /** @param {string=} someString */
-  constructor(someString = 'default string') {
-    /** @private @const */
-    this.someString_ = someString;
-
-    /** @private @const {!OtherType} */
-    this.someOtherThing_ = functionThatReturnsAThing();
-
-    /**
-     * Maximum number of things per pane.
-     * @type {number}
-     */
-    this.someProperty = 4;
-  }
-}
-
-/**
- * The number of times we'll try before giving up.
- * @const
- */
-MyClass.RETRY_COUNT = 33;
-</code></pre>
-
-<h3 id="jsdoc-type-annotations">7.10 Type annotations</h3>
-
-<p>Type annotations are found on <code>@param</code>, <code>@return</code>, <code>@this</code>, and <code>@type</code> tags,
-and optionally on <code>@const</code>, <code>@export</code>, and any visibility tags.  Type
-annotations attached to JSDoc tags must always be enclosed in braces.</p>
-
-<h4 id="jsdoc-nullability">7.10.1 Nullability</h4>
-
-<p>The type system defines modifiers <code>!</code> and <code>?</code> for non-null and nullable,
-respectively.  Primitive types (<code>undefined</code>, <code>string</code>, <code>number</code>, <code>boolean</code>,
-<code>symbol</code>, and <code>function(...): ...</code>) and record literals (<code>{foo: string, bar:
-number}</code>) are non-null by default.  Do not add an explicit <code>!</code> to these types.
-Object types (<code>Array</code>, <code>Element</code>, <code>MyClass</code>, etc) are nullable by default, but
-cannot be immediately distinguished from a name that is <code>@typedef</code>&#8217;d to a
-non-null-by-default type.  As such, all types except primitives and record
-literals must be annotated explicitly with either <code>?</code> or <code>!</code> to indicate whether
-they are nullable or not.</p>
-
-<h4 id="jsdoc-type-casts">7.10.2 Type Casts</h4>
-
-<p>In cases where type checking doesn't accurately infer the type of an expression,
-it is possible to tighten the type by adding a type annotation comment and
-enclosing the expression in parentheses. Note that the parentheses are required.</p>
-
-<pre><code class="language-js prettyprint">/** @type {number} */ (x)
-</code></pre>
-
-<h4 id="jsdoc-template-parameter-types">7.10.3 Template Parameter Types</h4>
-
-<p>Always specify template parameters. This way compiler can do a better job and it
-makes it easier for readers to understand what code does.</p>
-
-<p>Bad:</p>
-
-<pre><code class="language-js prettyprint badcode">const /** !Object */ users = {};
-const /** !Array */ books = [];
-const /** !Promise */ response = ...;
-</code></pre>
-
-<p>Good:</p>
-
-<pre><code class="language-js prettyprint">const /** !Object&lt;string, !User&gt; */ users = {};
-const /** !Array&lt;string&gt; */ books = [];
-const /** !Promise&lt;!Response&gt; */ response = ...;
-
-const /** !Promise&lt;undefined&gt; */ thisPromiseReturnsNothingButParameterIsStillUseful = ...;
-const /** !Object&lt;string, *&gt; */ mapOfEverything = {};
-</code></pre>
-
-<p>Cases when template parameters should not be used:</p>
-
-<ul>
-<li><code>Object</code> is used for type hierarchy and not as map-like structure.</li>
-</ul>
-
-<h3 id="jsdoc-visibility-annotations">7.11 Visibility annotations</h3>
-
-<p>Visibility annotations (<code>@private</code>, <code>@package</code>, <code>@protected</code>) may be specified
-in a <code>@fileoverview</code> block, or on any exported symbol or property.  Do not
-specify visibility for local variables, whether within a function or at the top
-level of a module.  All <code>@private</code> names must end with an underscore.</p>
-
-<h2 id="appendices">9 Appendices</h2>
-
-<h3 id="appendices-jsdoc-tag-reference">9.1 JSDoc tag reference</h3>
-
-<p>JSDoc serves multiple purposes in JavaScript.  In addition to being used to
-generate documentation it is also used to control tooling.  The best known are
-the Closure Compiler type annotations.</p>
-
-<h4 id="appendices-type-annotations">9.1.1 Type annotations and other Closure Compiler annotations</h4>
-
-<p>Documentation for JSDoc used by the Closure Compiler is described in
-<a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">Annotating JavaScript for the Closure Compiler</a> and <a href="https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System">Types in the Closure Type
-System</a>.</p>
-
-<h4 id="appendices-documentation-annotations">9.1.2 Documentation annotations</h4>
-
-<p>In addition to the JSDoc described in <a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">Annotating JavaScript for the Closure
-Compiler</a> the following tags are common and well supported by various
-documentation generations tools (such as <a href="https://github.com/jleyba/js-dossier">JsDossier</a>) for purely documentation
-purposes.
-<table>
-  <thead>
-    <tr>
-      <th>Tag
-      </th><th>Template &amp; Examples
-      </th><th>Description
-  </th></tr></thead><tbody>
-    <tr>
-      <td><code>@author</code> or <code>@owner</code>
-      </td><td><code>@author username@google.com (First Last)</code>
-        <p><em>For example:</em>
-        </p><pre class="prettyprint lang-js">
-/**
- * @fileoverview Utilities for handling textareas.
- * @author <a href="mailto:kuth@google.com">kuth@google.com</a> (Uthur Pendragon)
- */
- </pre>
-      </td><td>Document the author of a file or the owner of a test, generally only
-        used in the <code>@fileoverview</code> comment. The <code>@owner</code> tag is used by the
-        unit test dashboard to determine who owns the test results.
-        <p>Not recommended.
-    </p></td></tr><tr>
-      <td><code>@bug</code>
-      </td><td><code>@bug bugnumber</code>
-        <p><em>For example:</em>
-        </p><pre class="prettyprint lang-js">
-/** @bug 1234567 */
-function testSomething() {
-  // &#8230;
-}
-
-<p>/**
- * @bug 1234568
- * @bug 1234569
- */
-function testTwoBugs() {
-  // &#8230;
-}
-</p></pre>
-      </td><td>Indicates what bugs the given test function regression tests.
-        <p>Multiple bugs should each have their own <code>@bug</code> line, to make
-        searching for regression tests as easy as possible.
-    </p></td></tr><tr>
-      <td><code>@code</code>
-      </td><td><code>{@code ...}</code>
-        <p><em>For example:</em>
-        </p><pre class="prettyprint lang-js">
-/**
- * Moves to the next position in the selection.
- * Throws {@code goog.iter.StopIteration} when it
- * passes the end of the range.
- * @return {!Node} The node at the next position.
- */
-goog.dom.RangeIterator.prototype.next = function() {
-  // &#8230;
-};
-</pre>
-      </td><td>Indicates that a term in a JSDoc description is code so it may be
-        correctly formatted in generated documentation.
-    </td></tr><tr>
-      <td><code>@see</code>
-      </td><td><code>@see Link</code>
-        <p><em>For example:</em>
-        </p><pre class="prettyprint lang-js">
-/**
- * Adds a single item, recklessly.
- * @see #addSafely
- * @see goog.Collect
- * @see goog.RecklessAdder#add
- */
- </pre>
-       </td><td>Reference a lookup to another class function or method.
-    </td></tr><tr>
-      <td><code>@supported</code>
-      </td><td><code>@supported Description</code>
-        <p><em>For example:</em>
-        </p><pre class="prettyprint lang-js">
-/**
- * @fileoverview Event Manager
- * Provides an abstracted interface to the
- * browsers' event systems.
- * @supported IE10+, Chrome, Safari
- */
-</pre>
-      </td><td>Used in a fileoverview to indicate what browsers are supported by
-        the file.
-    </td></tr><tr>
-      <td><code>@desc</code>
-      </td><td><code>@desc Message description</code>
-        <p><em>For example:</em>
-        </p><pre class="prettyprint lang-js">
-/** @desc Notifying a user that their account has been created. */
-exports.MSG_ACCOUNT_CREATED = goog.getMsg(
-    'Your account has been successfully created.');
- </pre>
-      </td></tr></tbody></table></p>
-
-<p>You may also see other types of JSDoc annotations in third-party code. These
-annotations appear in the <a href="http://code.google.com/p/jsdoc-toolkit/wiki/TagReference">JSDoc Toolkit Tag Reference</a> but are not considered
-part of valid Google style.</p>
-
-<h4 id="appendices-framework-specific-annotations">9.1.3 Framework specific annotations</h4>
-
-<p>The following annotations are specific to a particular framework.
-<table>
-  <thead>
-    <tr>
-      <th>Framework
-      </th><th>Tag
-      </th><th>Documentation
-  </th></tr></thead><tbody>
-    <tr>
-      <td>Angular 1
-      </td><td><code>@ngInject</code>
-      </td></tr><tr>
-      <td>Polymer
-      </td><td><code>@polymerBehavior</code>
-      </td><td>
-          
-            <a href="https://github.com/google/closure-compiler/wiki/Polymer-Pass">https://github.com/google/closure-compiler/wiki/Polymer-Pass</a>
-          
-    </td></tr></tbody></table></p>
-
-<h4 id="appendices-notes-about-standard-closure-compiler-annotations">9.1.4 Notes about standard Closure Compiler annotations</h4>
-
-<p>The following tags used to be standard but are now deprecated.
-<table>
-  <thead>
-    <tr>
-      <th>Tag
-      </th><th>Template &amp; Examples
-      </th><th>Description
-  </th></tr></thead><tbody>
-    <tr>
-      <td><code>@expose</code>
-      </td><td><code>@expose</code>
-      </td><td><strong>Deprecated. Do not use. Use <code>@export</code> and/or <code>@nocollapse</code>
-        instead.</strong>
-    </td></tr><tr>
-      <td><code>@inheritDoc</code>
-      </td><td><code>@inheritDoc</code>
-      </td><td><strong>Deprecated. Do not use. Use <code>@override</code> instead.</strong>
-</td></tr></tbody></table></p>
-
-<h3 id="appendices-commonly-misunderstood-style-rules">9.2 Commonly misunderstood style rules</h3>
-
-<p>Here is a collection of lesser-known or commonly misunderstood facts about
-Google Style for JavaScript. (The following are true statements; this is not a
-list of <q>myths.</q>)</p>
-
-<ul>
-<li>Neither a copyright statement nor <code>@author</code> credit is required in a source
-file. (Neither is explicitly recommended, either.)</li>
-<li>Aside from the constructor coming first
-(<a href="#features-classes-constructors">??</a>), there is no <q>hard and fast</q> rule
-governing how to order the members of a class (<a href="#features-classes">??</a>).</li>
-<li>Empty blocks can usually be represented concisely as <code>{}</code>, as detailed in
-(<a href="#formatting-empty-blocks">??</a>).</li>
-<li>The prime directive of line-wrapping is: prefer to break at a higher
-syntactic level (<a href="#formatting-where-to-break">??</a>).</li>
-<li>Non-ASCII characters are allowed in string literals, comments and Javadoc,
-and in fact are recommended when they make the code easier to read than the
-equivalent Unicode escape would (<a href="#non-ascii-characters">??</a>).</li>
-</ul>
-
-<h3 id="appendices-style-related-tools">9.3 Style-related tools</h3>
-
-<p>The following tools exist to support various aspects of Google Style.</p>
-
-<h4 id="appendices-tools-closure-compiler">9.3.1 Closure Compiler</h4>
-
-<p>This program performs type checking and other checks,
-optimizations and other transformations (such as ECMAScript 6 to ECMAScript 5
-code lowering).</p>
-
-<h4 id="appendices-clang-format">9.3.2 <code>clang-format</code></h4>
-
-<p>This program  reformats
-JavaScript source code into Google Style, and also follows a number of
-non-required but frequently readability-enhancing formatting practices.</p>
-
-<p><code>clang-format</code> is not required. Authors are allowed to change its output, and
-reviewers are allowed to ask for such changes; disputes are worked out in the
-usual way. However, subtrees may choose to opt in to such enforcement locally.</p>
-
-<h4 id="appendices-closure-compiler-linter">9.3.3 Closure compiler linter</h4>
-
-<p>This program  checks for a
-variety of missteps and anti-patterns.
-</p>
-
-<h4 id="appendices-conformance-framework">9.3.4 Conformance framework</h4>
-
-<p>The JS Conformance Framework is a tool that is part of the Closure Compiler that
-provides developers a simple means to specify a set of additional checks to be
-run against their code base above the standard checks.  Conformance checks can,
-for example, forbid access to a certain property, or calls to a certain
-function, or missing type information (unknowns).</p>
-
-<p>These rules are commonly used to enforce critical restrictions (such as defining
-globals, which could break the codebase) and security patterns (such as using
-<code>eval</code> or assigning to <code>innerHTML</code>), or more loosely to improve code quality.</p>
-
-<p>For additional information see the official documentation for the
-<a href="https://github.com/google/closure-compiler/wiki/JS-Conformance-Framework">JS Conformance Framework</a>.</p>
-
-<h3 id="appendices-legacy-exceptions">9.4 Exceptions for legacy platforms</h3>
-
-<h4 id="appendices-legacy-exceptions-overview">9.4.1 Overview</h4>
-
-<p>This section describes exceptions and additional rules to be followed when
-modern ECMAScript 6 syntax is not available to the code authors. Exceptions to
-the recommended style are required when ECMAScript 6 syntax is not possible and
-are outlined here:</p>
-
-<ul>
-<li>Use of <code>var</code> declarations is allowed</li>
-<li>Use of <code>arguments</code> is allowed</li>
-<li>Optional parameters without default values are allowed</li>
-</ul>
-
-<h4 id="appendices-legacy-exceptions-var">9.4.2 Use <code>var</code></h4>
-
-<h5 id="appendices-legacy-exceptions-var-scope">9.4.2.1 <code>var</code> declarations are NOT block-scoped</h5>
-
-<p><code>var</code> declarations are scoped to the beginning of the nearest enclosing
-function, script or module, which can cause unexpected behavior, especially with
-function closures that reference <code>var</code> declarations inside of loops. The
-following code gives an example:</p>
-
-<pre><code class="language-js prettyprint badcode">for (var i = 0; i &lt; 3; ++i) {
-  var iteration = i;
-  setTimeout(function() { console.log(iteration); }, i*1000);
-}
-
-// logs 2, 2, 2 -- NOT 0, 1, 2
-// because `iteration` is function-scoped, not local to the loop.
-
-</code></pre>
-
-<h5 id="appendices-legacy-exceptions-var-declare">9.4.2.2 Declare variables as close as possible to first use</h5>
-
-<p>Even though <code>var</code> declarations are scoped to the beginning of the enclosing
-function, <code>var</code> declarations should be as close as possible to their first use,
-for readability purposes. However, do not put a <code>var</code> declaration inside a block
-if that variable is referenced outside the block. For example:</p>
-
-<pre><code class="language-js prettyprint">function sillyFunction() {
-  var count = 0;
-  for (var x in y) {
-    // "count" could be declared here, but don't do that.
-    count++;
-  }
-  console.log(count + ' items in y');
-}
-</code></pre>
-
-<h5 id="appendices-legacy-exceptions-var-const">9.4.2.3 Use @const for constants variables</h5>
-
-<p>For global declarations where the <code>const</code> keyword would be used, if it were
-available, annotate the <code>var</code> declaration with @const instead (this is optional
-for local variables).</p>
-
-<h4 id="appendices-legacy-exceptions-function">9.4.3 Do not use block scoped functions declarations</h4>
-
-<p>Do <strong>not</strong> do this:</p>
-
-<pre><code class="language-js prettyprint badcode">if (x) {
-  function foo() {}
-}
-</code></pre>
-
-<p>While most JavaScript VMs implemented before ECMAScript 6 support function
-declarations within blocks it was not standardized. Implementations were
-inconsistent with each other and with the now-standard ECMAScript 6 behavior for
-block scoped function declaration. ECMAScript 5 and prior only allow for
-function declarations in the root statement list of a script or function and
-explicitly ban them in block scopes in strict mode.</p>
-
-<p>To get consistent behavior, instead use a <code>var</code> initialized with a function
-expression to define a function within a block:</p>
-
-<pre><code class="language-js prettyprint">if (x) {
-  var foo = function() {};
-}
-</code></pre>
-
-<h4 id="appendices-legacy-exceptions-goog-provide">9.4.4 Dependency management with <code>goog.provide</code>/<code>goog.require</code></h4>
-
-<p><strong><code>goog.provide</code> is deprecated. All new files should use <code>goog.module</code>, even in
-projects with existing <code>goog.provide</code> usage. The following rules are for
-pre-existing goog.provide files, only.</strong></p>
-
-<h5 id="appendices-legacy-exceptions-goog-provide-summary">9.4.4.1 Summary</h5>
-
-<ul>
-<li>Place all <code>goog.provide</code>s first, <code>goog.require</code>s second. Separate provides
-from requires with an empty line.</li>
-<li>Sort the entries alphabetically (uppercase first).</li>
-<li>Don't wrap <code>goog.provide</code> and <code>goog.require</code> statements. Exceed 80 columns
-if necessary.</li>
-<li>Only provide top-level symbols.</li>
-</ul>
-
-<p>As of Oct 2016, <strong><code>goog.provide</code>/<code>goog.require</code> dependency management is
-deprecated</strong>. All new files, even in projects using <code>goog.provide</code> for older
-files, should use
-<a href="#source-file-structure"><code>goog.module</code></a>.</p>
-
-<p><code>goog.provide</code> statements should be grouped together and placed first. All
-<code>goog.require</code> statements should follow. The two lists should be separated with
-an empty line.</p>
-
-<p>Similar to import statements in other languages, <code>goog.provide</code> and
-<code>goog.require</code> statements should be written in a single line, even if they
-exceed the 80 column line length limit.</p>
-
-<p>The lines should be sorted alphabetically, with uppercase letters coming first:</p>
-
-<pre><code class="language-js prettyprint">goog.provide('namespace.MyClass');
-goog.provide('namespace.helperFoo');
-
-goog.require('an.extremelyLongNamespace.thatSomeoneThought.wouldBeNice.andNowItIsLonger.Than80Columns');
-goog.require('goog.dom');
-goog.require('goog.dom.TagName');
-goog.require('goog.dom.classes');
-goog.require('goog.dominoes');
-
-</code></pre>
-
-<p>All members defined on a class should be in the same file. Only top-level
-classes should be provided in a file that contains multiple members defined on
-the same class (e.g. enums, inner classes, etc).</p>
-
-<p>Do this:</p>
-
-<pre><code class="language-js prettyprint">goog.provide('namespace.MyClass');
-</code></pre>
-
-<p>Not this:</p>
-
-<pre><code class="language-js prettyprint badcode">goog.provide('namespace.MyClass');
-goog.provide('namespace.MyClass.CONSTANT');
-goog.provide('namespace.MyClass.Enum');
-goog.provide('namespace.MyClass.InnerClass');
-goog.provide('namespace.MyClass.TypeDef');
-goog.provide('namespace.MyClass.staticMethod');
-</code></pre>
-
-<p>Members on namespaces may also be provided:</p>
-
-<pre><code class="language-js prettyprint">goog.provide('foo.bar');
-goog.provide('foo.bar.CONSTANT');
-goog.provide('foo.bar.method');
-</code></pre>
-
-<h5 id="appendices-legacy-exceptions-goog-scope">9.4.4.2 Aliasing with <code>goog.scope</code></h5>
-
-<p><strong><code>goog.scope</code> is deprecated. New files should not use <code>goog.scope</code> even in
-projects with existing goog.scope usage.</strong></p>
-
-<p><code>goog.scope</code> may be used to shorten references to namespaced symbols in
-code using <code>goog.provide</code>/<code>goog.require</code> dependency management.</p>
-
-<p>Only one <code>goog.scope</code> invocation may be added per file. Always place it in
-the global scope.</p>
-
-<p>The opening <code>goog.scope(function() {</code> invocation must be preceded by exactly one
-blank line and follow any <code>goog.provide</code> statements, <code>goog.require</code> statements,
-or top-level comments. The invocation must be closed on the last line in the
-file. Append <code>// goog.scope</code> to the closing statement of the scope. Separate the
-comment from the semicolon by two spaces.</p>
-
-<p>Similar to C++ namespaces, do not indent under <code>goog.scope</code> declarations.
-Instead, continue from the 0 column.</p>
-
-<p>Only make aliases for names that will not be re-assigned to another object
-(e.g., most constructors, enums, and namespaces). Do not do this (see below for
-how to alias a constructor):</p>
-
-<pre><code class="language-js prettyprint badcode">goog.scope(function() {
-var Button = goog.ui.Button;
-
-Button = function() { ... };
-...
-</code></pre>
-
-<p>Names must be the same as the last property of the global that they are aliasing.</p>
-
-<pre><code class="language-js prettyprint">goog.provide('my.module.SomeType');
-
-goog.require('goog.dom');
-goog.require('goog.ui.Button');
-
-goog.scope(function() {
-var Button = goog.ui.Button;
-var dom = goog.dom;
-
-// Alias new types after the constructor declaration.
-my.module.SomeType = function() { ... };
-var SomeType = my.module.SomeType;
-
-// Declare methods on the prototype as usual:
-SomeType.prototype.findButton = function() {
-  // Button as aliased above.
-  this.button = new Button(dom.getElement('my-button'));
-};
-...
-});  // goog.scope
-</code></pre>
+<p>参照JSDoc规范。</p>
 
 </div>
 </body>
