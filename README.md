@@ -35,6 +35,6 @@ The following Google style guides live outside of this project:
 
 <a rel="license" href="https://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
 
-[htmlcss]: https://google.github.io/styleguide/htmlcssguide.html
+[htmlcss]: https://vitojing.github.io/styleguide/htmlcssguide.html
 [js]: https://vitojing.github.io/styleguide/jsguide.html
-[xml]: https://google.github.io/styleguide/xmlstyle.html
+[xml]: https://vitojing.github.io/styleguide/xmlstyle.html
