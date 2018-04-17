@@ -13,13 +13,8 @@ style guidelines we use for Google code. If you are modifying a project that
 originated at Google, you may be pointed to this page to see the style guides
 that apply to that project.
 
-This project holds the [C++ Style Guide][cpp], [Objective-C Style Guide][objc],
-[Java Style Guide][java], [Python Style Guide][py], [R Style Guide][r],
-[Shell Style Guide][sh], [HTML/CSS Style Guide][htmlcss],
-[JavaScript Style Guide][js], [AngularJS Style Guide][angular],
-[Common Lisp Style Guide][cl], and [Vimscript Style Guide][vim]. This project
-also contains [cpplint][cpplint], a tool to assist with style guide compliance,
-and [google-c-style.el][emacs], an Emacs settings file for Google style.
+This project holds the [HTML/CSS Style Guide][htmlcss],
+[JavaScript Style Guide][js].
 
 If your project requires that you create a new XML document format, the [XML
 Document Format Style Guide][xml] may be helpful. In addition to actual style
@@ -37,4 +32,3 @@ The following Google style guides live outside of this project:
 
 [htmlcss]: https://vitojing.github.io/styleguide/htmlcssguide.html
 [js]: https://vitojing.github.io/styleguide/jsguide.html
-[xml]: https://vitojing.github.io/styleguide/xmlstyle.html
