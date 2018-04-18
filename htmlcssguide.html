@@ -134,67 +134,45 @@ character encodings in HTML and CSS</a>。</p>
 
 <h4 id="Semantics">3.1.3 语义</h4>
 
-<p>Use HTML according to its purpose.</p>
+<p>按照其设计目的使用HTML元素。例如对标题使用heading元素，段落使用<code>p</code>元素，链接锚点使用<code>a</code>元素。</p>
 
-<p>Use elements (sometimes incorrectly called &#8220;tags&#8221;) for what they have been
-created for. For example, use heading elements for headings, <code>p</code> elements for
-paragraphs, <code>a</code> elements for anchors, etc.</p>
+<p>对于信息无障碍获取，复用，代码效率等因素而言，按照设计目的使用HTML元素都是很重要的。</p>
 
-<p>Using HTML according to its purpose is important for accessibility, reuse, and
-code efficiency reasons.</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 &lt;div onclick="goToRecommendations();"&gt;All recommendations&lt;/div&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 &lt;a href="recommendations/"&gt;All recommendations&lt;/a&gt;
 </code></pre>
 
-<h4 id="Multimedia_Fallback">3.1.4 Multimedia Fallback</h4>
+<h4 id="Multimedia_Fallback">3.1.4 多媒体元素降级</h4>
 
-<p>Provide alternative contents for multimedia.</p>
+<p>为多媒体元素提供备选方案。</p>
 
-<p>For multimedia, such as images, videos, animated objects via <code>canvas</code>, make sure
-to offer alternative access. For images that means use of meaningful alternative
-text (<code>alt</code>) and for video and audio transcripts and captions, if available.</p>
+<p>确保为图片、视频、<code>canvas</code>动画等多媒体元素提供备选方案。对图片使用含义明确的替代文本（<code>alt</code>），对音视频提供文字版本。</p>
 
-<p>Providing alternative contents is important for accessibility reasons: A blind
-user has few cues to tell what an image is about without <code>@alt</code>, and other users
-may have no way of understanding what video or audio contents are about either.</p>
+<p>如果备选方案会导致图片等冗余，或者图片等元素仅仅是起到装饰效果，可以将<code>alt</code>内容置空（<code>alt=""</code>）。</p>
 
-<p>(For images whose <code>alt</code> attributes would introduce redundancy, and for images
-whose purpose is purely decorative which you cannot immediately use CSS for, use
-no alternative text, as in <code>alt=""</code>.)</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 &lt;img src="spreadsheet.png"&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 &lt;img src="spreadsheet.png" alt="Spreadsheet screenshot."&gt;
 </code></pre>
 
-<h4 id="Separation_of_Concerns">3.1.5 Separation of Concerns</h4>
+<h4 id="Separation_of_Concerns">3.1.5 关注点分离</h4>
 
-<p>Separate structure from presentation from behavior.</p>
+<p>将结构（html标记）、呈现（css样式）、行为（js脚本）分离，最小化其耦合部分。</p>
 
-<p>Strictly keep structure (markup), presentation (styling), and behavior
-(scripting) apart, and try to keep the interaction between the three to an
-absolute minimum.</p>
+<p>也就是说，确保文档/模板仅包含HTML，且HTML仅用于描述内容结构。将呈现相关逻辑放在样式中，行为逻辑放在脚本中。</p>
 
-<p>That is, make sure documents and templates contain only HTML and HTML that is
-solely serving structural purposes. Move everything presentational into style
-sheets, and everything behavioral into scripts.</p>
+<p>此外，HTML对样式、脚本的引用尽量少，以简化其耦合部分。</p>
 
-<p>In addition, keep the contact area as small as possible by linking as few style
-sheets and scripts as possible from documents and templates.</p>
+<p>关注点分离对于维护很重要阿，一般而言修改HTML文件比修改样式、脚本更容易出问题。</p>
 
-<p>Separating structure from presentation from behavior is important for
-maintenance reasons. It is always more expensive to change HTML documents and
-templates than it is to update style sheets and scripts.</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 &lt;!DOCTYPE html&gt;
 &lt;title&gt;HTML sucks&lt;/title&gt;
 &lt;link rel="stylesheet" href="base.css" media="screen"&gt;
@@ -207,7 +185,7 @@ templates than it is to update style sheets and scripts.</p>
   my website without doing everything all over again!&lt;/center&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 &lt;!DOCTYPE html&gt;
 &lt;title&gt;My first CSS-only redesign&lt;/title&gt;
 &lt;link rel="stylesheet" href="default.css"&gt;
@@ -218,102 +196,49 @@ templates than it is to update style sheets and scripts.</p>
 &lt;p&gt;It&#8217;s awesome!
 </code></pre>
 
-<h4 id="Entity_References">3.1.6 Entity References</h4>
+<h4 id="Entity_References">3.1.6 实体引用</h4>
 
-<p>Do not use entity references.</p>
+<p>一般不要使用实体引用。如果团队中文件、编辑器使用统一的编码方式（UTF-8），就没必要使用<code>&amp;mdash;</code>、<code>&amp;rdquo;</code>之类的实体引用写法。</p>
 
-<p>There is no need to use entity references like <code>&amp;mdash;</code>, <code>&amp;rdquo;</code>, or
-<code>&amp;#x263a;</code>, assuming the same encoding (UTF-8) is used for files and editors
-as well as among teams.</p>
+<p>例外情况包括HTML特殊字符（例如<code>&lt;</code> <code>&amp;</code>）以及控制字符或不可见字符（例如不换行空格<code>&ampnbsp;</code>）。</p>
 
-<p>The only exceptions apply to characters with special meaning in HTML (like <code>&lt;</code>
-and <code>&amp;</code>) as well as control or &#8220;invisible&#8221; characters (like no-break spaces).</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 The currency symbol for the Euro is &amp;ldquo;&amp;eur;&amp;rdquo;.
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 The currency symbol for the Euro is &#8220;&#8364;&#8221;.
 </code></pre>
 
-<h4 id="Optional_Tags">3.1.7 Optional Tags</h4>
+<h4 id="type_Attributes">3.1.7 <code>type</code> 属性</h4>
 
-<p>Omit optional tags (optional).</p>
+<p>对样式引用和脚本引用忽略<code>type</code>属性（除非引用的脚本不是Javascript），使用HTML5默认值即可。</p>
 
-<p>For file size optimization and scannability purposes, consider omitting optional
-tags. The <a href="https://html.spec.whatwg.org/multipage/syntax.html#syntax-tag-omission">HTML5 specification</a>
-defines what tags can be omitted.</p>
-
-<p>(This approach may require a grace period to be established as a wider guideline
-as it&#8217;s significantly different from what web developers are typically taught.
-For consistency and simplicity reasons it&#8217;s best served omitting all optional
-tags, not just a selection.)</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;Spending money, spending bytes&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;p&gt;Sic.&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;title&gt;Saving money, saving bytes&lt;/title&gt;
-&lt;p&gt;Qed.
-</code></pre>
-
-<h4 id="type_Attributes">3.1.8 <code>type</code> Attributes</h4>
-
-<p>Omit <code>type</code> attributes for style sheets and scripts.</p>
-
-<p>Do not use <code>type</code> attributes for style sheets (unless not using CSS) and scripts
-(unless not using JavaScript).</p>
-
-<p>Specifying <code>type</code> attributes in these contexts is not necessary as HTML5 implies
-<a href="https://html.spec.whatwg.org/multipage/obsolete.html#attr-style-type"><code>text/css</code></a>
-and <a href="https://html.spec.whatwg.org/multipage/scripting.html#attr-script-type"><code>text/javascript</code></a>
-as defaults. This can be safely done even for older browsers.</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 &lt;link rel="stylesheet" href="https://www.google.com/css/maia.css"
   type="text/css"&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 &lt;link rel="stylesheet" href="https://www.google.com/css/maia.css"&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 &lt;script src="https://www.google.com/js/gweb/analytics/autotrack.js"
   type="text/javascript"&gt;&lt;/script&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 &lt;script src="https://www.google.com/js/gweb/analytics/autotrack.js"&gt;&lt;/script&gt;
 </code></pre>
 
-<h3 id="HTML_Formatting_Rules">3.2 HTML Formatting Rules</h3>
+<h3 id="HTML_Formatting_Rules">3.2 HTML格式化规则</h3>
 
-<h4 id="General_Formatting">3.2.1 General Formatting</h4>
+<h4 id="General_Formatting">3.2.1 通用格式化规则</h4>
 
-<p>Use a new line for every block, list, or table element, and indent every such
-child element.</p>
+<p>每个块（block）、列表、表格元素都另起一行并缩进子元素。</p>
 
-<p>Independent of the styling of an element (as CSS allows elements to assume a
-different role per <code>display</code> property), put every block, list, or table element
-on a new line.</p>
-
-<p>Also, indent them if they are child elements of a block, list, or table element.</p>
-
-<p>(If you run into issues around whitespace between list items it&#8217;s acceptable to
-put all <code>li</code> elements in one line. A linter is encouraged to throw a warning
-instead of an error.)</p>
+<p>如果遇到list元素左右空格的问题（由于换行，浏览器会认为两个元素间存在一个空白），可以将元素放在同一行。</p>
 
 <pre><code class="language-html prettyprint">&lt;blockquote&gt;
   &lt;p&gt;&lt;em&gt;Space&lt;/em&gt;, the final frontier.&lt;/p&gt;
@@ -339,15 +264,11 @@ instead of an error.)</p>
 &lt;/table&gt;
 </code></pre>
 
-<h4 id="HTML_Line-Wrapping">3.2.2 HTML Line-Wrapping</h4>
+<h4 id="HTML_Line-Wrapping">3.2.2 HTML断行（可选）</h4>
 
-<p>Break long lines (optional).</p>
+<p>对HTML没有单行字符数限制，如果能显著增强代码可读性的话可以进行断行。</p>
 
-<p>While there is no column limit recommendation for HTML, you may consider
-wrapping long lines if it significantly improves readability.</p>
-
-<p>When line-wrapping, each continuation line should be indented at least 4
-additional spaces from the original line.</p>
+<p>断行时，延续行相对起始行缩进四个空格。</p>
 
 <pre><code class="language-html prettyprint">&lt;md-progress-circular md-mode="indeterminate" class="md-accent"
     ng-show="ctrl.loading" md-diameter="35"&gt;
@@ -369,59 +290,34 @@ additional spaces from the original line.</p>
 &lt;/md-progress-circular&gt;
 </code></pre>
 
-<h4 id="HTML_Quotation_Marks">3.2.3 HTML Quotation Marks</h4>
+<h4 id="HTML_Quotation_Marks">3.2.3 HTML引号</h4>
 
-<p>When quoting attributes values, use double quotation marks.</p>
+<p>在属性值上使用双引号，不要使用单引号。</p>
 
-<p>Use double (<code>""</code>) rather than single quotation marks (<code>''</code>) around attribute
-values.</p>
-
-<pre><code class="language-html prettyprint badcode">&lt;!-- Not recommended --&gt;
+<pre><code class="language-html prettyprint badcode">&lt;!-- 不推荐 --&gt;
 &lt;a class='maia-button maia-button-secondary'&gt;Sign in&lt;/a&gt;
 </code></pre>
 
-<pre><code class="language-html prettyprint">&lt;!-- Recommended --&gt;
+<pre><code class="language-html prettyprint">&lt;!-- 推荐 --&gt;
 &lt;a class="maia-button maia-button-secondary"&gt;Sign in&lt;/a&gt;
 </code></pre>
 
 <h2 id="CSS">4 CSS</h2>
 
-<h3 id="CSS_Style_Rules">4.1 CSS Style Rules</h3>
+<h3 id="CSS_Style_Rules">4.1 CSS样式规则</h3>
 
-<h4 id="CSS_Validity">4.1.1 CSS Validity</h4>
+<h4 id="CSS_Validity">4.1.1 CSS 合法性</h4>
 
-<p>Use valid CSS where possible.</p>
+<p>尽量只使用合法的CSS元素，除非需要使用专有语法。</p>
 
-<p>Unless dealing with CSS validator bugs or requiring proprietary syntax, use
-valid CSS code.</p>
+<p>使用<a href="https://jigsaw.w3.org/css-validator/">W3C CSS validator</a>之类的工具验证CSS合法性。</p>
 
-<p>
+<h4 id="ID_and_Class_Naming">4.1.2 ID和CSS类名</h4>
 
-Use tools such as the <a href="https://jigsaw.w3.org/css-validator/">W3C CSS validator</a>
-to test.
-</p>
+<p>元素ID和CSS类名应该能标志其目的，或者是一个粗略通用的名称。优先使用有意义的名称，这样的名称易理解且不易变。
+  如果元素相对其他同级元素而言没有特殊含义，那么可以使用通用名称（常用于辅助类）。</p>
 
-<p>Using valid CSS is a measurable baseline quality attribute that allows to spot
-CSS code that may not have any effect and can be removed, and that ensures
-proper CSS usage.</p>
-
-<h4 id="ID_and_Class_Naming">4.1.2 ID and Class Naming</h4>
-
-<p>Use meaningful or generic ID and class names.</p>
-
-<p>Instead of presentational or cryptic names, always use ID and class names that
-reflect the purpose of the element in question, or that are otherwise generic.</p>
-
-<p>Names that are specific and reflect the purpose of the element should be
-preferred as these are most understandable and the least likely to change.</p>
-
-<p>Generic names are simply a fallback for elements that have no particular or no
-meaning different from their siblings. They are typically needed as &#8220;helpers.&#8221;</p>
-
-<p>Using functional or generic names reduces the probability of unnecessary
-document or template changes.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended: meaningless */
+<pre><code class="language-css prettyprint badcode">/* 不推荐，没有任何含义 */
 #yee-1901 {}
 
 /* Not recommended: presentational */
@@ -429,65 +325,53 @@ document or template changes.</p>
 .clear {}
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended: specific */
+<pre><code class="language-css prettyprint">/* 推荐，指明了其含义 */
 #gallery {}
 #login {}
 .video {}
 
-/* Recommended: generic */
+/* 推荐，通用名称 */
 .aux {}
 .alt {}
 </code></pre>
 
-<h4 id="ID_and_Class_Name_Style">4.1.3 ID and Class Name Style</h4>
+<h4 id="ID_and_Class_Name_Style">4.1.3 ID和CSS类名样式</h4>
 
-<p>Use ID and class names that are as short as possible but as long as necessary.</p>
+<p>如前所述，ID和CSS类名需要表达一定含义。在满足表达需要的前提下，ID和CSS类名要尽量简短，这有助于提升可读性和代码效率。</p>
 
-<p>Try to convey what an ID or class is about while being as brief as possible.</p>
-
-<p>Using ID and class names this way contributes to acceptable levels of
-understandability and code efficiency.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 #navigation {}
 .atr {}
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 #nav {}
 .author {}
 </code></pre>
 
-<h4 id="Type_Selectors">4.1.4 Type Selectors</h4>
+<h4 id="Type_Selectors">4.1.4 类型选择子</h4>
 
-<p>Avoid qualifying ID and class names with type selectors.</p>
+<p>避免混合使用类型选择子与ID/CSS类名选择子。</p>
 
-<p>Unless necessary (for example with helper classes), do not use element names in
-conjunction with IDs or classes.</p>
+<p>出于<a href="http://www.stevesouders.com/blog/2009/06/18/simplifying-css-selectors/">性能考虑</a>，尽量避免不必要的派生选择子。</p>
 
-<p>Avoiding unnecessary ancestor selectors is useful for <a href="http://www.stevesouders.com/blog/2009/06/18/simplifying-css-selectors/">performance reasons</a>.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 ul#example {}
 div.error {}
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 #example {}
 .error {}
 </code></pre>
 
-<h4 id="Shorthand_Properties">4.1.5 Shorthand Properties</h4>
+<h4 id="Shorthand_Properties">4.1.5 简写属性</h4>
 
-<p>Use shorthand properties where possible.</p>
+<p>尽量使用CSS提供的<a href="https://www.w3.org/TR/CSS21/about.html#shorthand">简写属性</a>（例如<code>font</code>），即使只设置了一个值。</p>
 
-<p>CSS offers a variety of <a href="https://www.w3.org/TR/CSS21/about.html#shorthand">shorthand</a>
-properties (like <code>font</code>) that should be used whenever possible, even in cases
-where only one value is explicitly set.</p>
+<p>简写属性有助于提高代码执行效率和可读性。</p>
 
-<p>Using shorthand properties is useful for code efficiency and understandability.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 border-top-style: none;
 font-family: palatino, georgia, serif;
 font-size: 100%;
@@ -498,109 +382,80 @@ padding-right: 1em;
 padding-top: 0;
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 border-top: 0;
 font: 100%/1.6 palatino, georgia, serif;
 padding: 0 1em 2em;
 </code></pre>
 
-<h4 id="0_and_Units">4.1.6 0 and Units</h4>
+<h4 id="0_and_Units">4.1.6 0和单位</h4>
 
-<p>Omit unit specification after &#8220;0&#8221; values, unless required.</p>
+<p>除非一定需要，否则<code>0</code>后面不要指定单位。</p>
 
-<p>Do not use units after <code>0</code> values unless they are required.</p>
-
-<pre><code class="language-css prettyprint">flex: 0px; /* This flex-basis component requires a unit. */
-flex: 1 1 0px; /* Not ambiguous without the unit, but needed in IE11. */
+<pre><code class="language-css prettyprint">flex: 0px; /* flex-basis元素必须要指定单位 */
+flex: 1 1 0px; /* IE11必须指定单位，除此之外忽略单位也没问题 */
 margin: 0;
 padding: 0;
 </code></pre>
 
-<h4 id="Leading_0s">4.1.7 Leading 0s</h4>
+<h4 id="Leading_0s">4.1.7 开头处的0</h4>
 
-<p>Omit leading &#8220;0&#8221;s in values.</p>
-
-<p>Do not put <code>0</code>s in front of values or lengths between -1 and 1.</p>
+<p>忽略数字开头处的 &#8220;0&#8221;，-1和1之间的值也去掉开头的0。</p>
 
 <pre><code class="language-css prettyprint">font-size: .8em;
 </code></pre>
 
-<h4 id="Hexadecimal_Notation">4.1.8 Hexadecimal Notation</h4>
+<h4 id="Hexadecimal_Notation">4.1.8 16进制表示法</h4>
 
-<p>Use 3 character hexadecimal notation where possible.</p>
+<p>尽量使用三字符的十六进制表示法。对颜色取值而言，三字符十六进制表示法更简捷。</p>
 
-<p>For color values that permit it, 3 character hexadecimal notation is shorter and
-more succinct.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 color: #eebbcc;
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 color: #ebc;
 </code></pre>
 
-<h4 id="Prefixes">4.1.9 Prefixes</h4>
+<h4 id="Prefixes">4.1.9 前缀</h4>
 
-<p>Prefix selectors with an application-specific prefix (optional).</p>
+<p>（可选）对选择子添加应用相关前缀。</p>
 
-<p>In large projects as well as for code that gets embedded in other projects or on
-external sites use prefixes (as namespaces) for ID and class names. Use short,
-unique identifiers followed by a dash.</p>
+<p>在大型团队中，代码可能被嵌入其他项目或者外部网站，此时可以为ID和类名添加前缀作为命名空间。一般使用简短唯一的标志符作为前缀，前缀与其他部分使用连接符连接。</p>
 
-<p>Using namespaces helps preventing naming conflicts and can make maintenance
-easier, for example in search and replace operations.</p>
+<p>使用命名空间可以避免名称冲突且让维护变得简单，例如有利于检索或者替换。</p>
 
 <pre><code class="language-css prettyprint">.adw-help {} /* AdWords */
 #maia-note {} /* Maia */
 </code></pre>
 
-<h4 id="ID_and_Class_Name_Delimiters">4.1.10 ID and Class Name Delimiters</h4>
+<h4 id="ID_and_Class_Name_Delimiters">4.1.10 ID和类型分隔符</h4>
 
-<p>Separate words in ID and class names by a hyphen.</p>
+<p>ID和类名使用连字符（<code>-</code>）进行分隔。</p>
 
-<p>Do not concatenate words and abbreviations in selectors by any characters
-(including none at all) other than hyphens, in order to improve understanding
-and scannability.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended: does not separate the words &#8220;demo&#8221; and &#8220;image&#8221; */
+<pre><code class="language-css prettyprint badcode">/* 不推荐，未分隔 */
 .demoimage {}
 
-/* Not recommended: uses underscore instead of hyphen */
+/* 不推荐，应该使用连字符而不是下划线 */
 .error_status {}
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 #video-id {}
 .ads-sample {}
 </code></pre>
 
 <h4 id="Hacks">4.1.11 Hacks</h4>
 
-<p>Avoid user agent detection as well as CSS &#8220;hacks&#8221;&#8212;try a different approach
-first.</p>
+<p>不要使用浏览器检测以及CSS &#8220;hacks&#8221;&#8212;，尝试用其他方式解决问题。这种方式不利于代码维护。</p>
 
-<p>It&#8217;s tempting to address styling differences over user agent detection or
-special CSS filters, workarounds, and hacks. Both approaches should be
-considered last resort in order to achieve and maintain an efficient and
-manageable code base. Put another way, giving detection and hacks a free pass
-will hurt projects in the long run as projects tend to take the way of least
-resistance. That is, allowing and making it easy to use detection and hacks
-means using detection and hacks more frequently&#8212;and more frequently is too
-frequently.</p>
+<h3 id="CSS_Formatting_Rules">4.2 CSS格式化规则</h3>
 
-<h3 id="CSS_Formatting_Rules">4.2 CSS Formatting Rules</h3>
+<h4 id="Declaration_Order">4.2.1 属性书写顺序</h4>
 
-<h4 id="Declaration_Order">4.2.1 Declaration Order</h4>
+<p>按照字符顺序书写。</p>
 
-<p>Alphabetize declarations.</p>
-
-<p>Put declarations in alphabetical order in order to achieve consistent code in a
-way that is easy to remember and maintain.</p>
-
-<p>Ignore vendor-specific prefixes for sorting purposes. However, multiple
-vendor-specific prefixes for a certain CSS property should be kept sorted (e.g.
--moz prefix comes before -webkit).</p>
+<p>如果属性名包含厂商前缀，排序时前缀部分作为次要排序因素。</p>
 
 <pre><code class="language-css prettyprint">background: fuchsia;
 border: 1px solid;
@@ -612,13 +467,9 @@ text-align: center;
 text-indent: 2em;
 </code></pre>
 
-<h4 id="Block_Content_Indentation">4.2.2 Block Content Indentation</h4>
+<h4 id="Block_Content_Indentation">4.2.2 块级内容缩进</h4>
 
-<p>Indent all block content.</p>
-
-<p>Indent all <a href="https://www.w3.org/TR/CSS21/syndata.html#block">block content</a>,
-that is rules within rules as well as declarations, so to reflect hierarchy and
-improve understanding.</p>
+<p>为反映层级结构，改善可读性，缩进所有<a href="https://www.w3.org/TR/CSS21/syndata.html#block">块级元素</a>。</p>
 
 <pre><code class="language-css prettyprint">@media screen, projection {
 
@@ -630,87 +481,73 @@ improve understanding.</p>
 }
 </code></pre>
 
-<h4 id="Declaration_Stops">4.2.3 Declaration Stops</h4>
+<h4 id="Declaration_Stops">4.2.3 声明结束</h4>
 
-<p>Use a semicolon after every declaration.</p>
+<p>出于一致性和扩展性考虑，所有声明以分号结束。</p>
 
-<p>End every declaration with a semicolon for consistency and extensibility
-reasons.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 .test {
   display: block;
   height: 100px
 }
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 .test {
   display: block;
   height: 100px;
 }
 </code></pre>
 
-<h4 id="Property_Name_Stops">4.2.4 Property Name Stops</h4>
+<h4 id="Property_Name_Stops">4.2.4 属性名结尾</h4>
 
-<p>Use a space after a property name&#8217;s colon.</p>
+<p>在属性名、冒号和属性值之间都应有一个空格。</p>
 
-<p>Always use a single space between property and value (but no space between
-property and colon) for consistency reasons.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 h3 {
   font-weight:bold;
 }
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 h3 {
   font-weight: bold;
 }
 </code></pre>
 
-<h4 id="Declaration_Block_Separation">4.2.5 Declaration Block Separation</h4>
+<h4 id="Declaration_Block_Separation">4.2.5 样式块的分隔</h4>
 
-<p>Use a space between the last selector and the declaration block.</p>
+<p>最后一个选择子和声明块之间有且仅有一个空格，不要换行。</p>
 
-<p>Always use a single space between the last selector and the opening brace that
-begins the <a href="https://www.w3.org/TR/CSS21/syndata.html#rule-sets">declaration block</a>.</p>
-
-<p>The opening brace should be on the same line as the last selector in a given
-rule.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended: missing space */
+<pre><code class="language-css prettyprint badcode">/* 不推荐：缺空格 */
 #video{
   margin-top: 1em;
 }
 
-/* Not recommended: unnecessary line break */
+/* 不推荐：不要换行 */
 #video
 {
   margin-top: 1em;
 }
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 #video {
   margin-top: 1em;
 }
 </code></pre>
 
-<h4 id="Selector_and_Declaration_Separation">4.2.6 Selector and Declaration Separation</h4>
+<h4 id="Selector_and_Declaration_Separation">4.2.6 选择其分隔</h4>
 
-<p>Separate selectors and declarations by new lines.</p>
+<p>每个选择其都另起一行。</p>
 
-<p>Always start a new line for each selector and declaration.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 a:focus, a:active {
   position: relative; top: 1px;
 }
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 h1,
 h2,
 h3 {
@@ -719,11 +556,9 @@ h3 {
 }
 </code></pre>
 
-<h4 id="Rule_Separation">4.2.7 Rule Separation</h4>
+<h4 id="Rule_Separation">4.2.7 规则分隔</h4>
 
-<p>Separate rules by new lines.</p>
-
-<p>Always put a blank line (two line breaks) between rules.</p>
+<p>规则之间用空行隔开。</p>
 
 <pre><code class="language-css prettyprint">html {
   background: #fff;
@@ -735,17 +570,13 @@ body {
 }
 </code></pre>
 
-<h4 id="CSS_Quotation_Marks">4.2.8 CSS Quotation Marks</h4>
+<h4 id="CSS_Quotation_Marks">4.2.8 CSS引号</h4>
 
-<p>Use single (<code>''</code>) rather than double (<code>""</code>) quotation marks for attribute
-selectors and property values.</p>
+<p>属性选择子和属性值使用单引号，不要使用双引号。URI值（<code>url()</code>）不要使用引号。</p>
 
-<p>Do not use quotation marks in URI values (<code>url()</code>).</p>
+<p>例外：如果需要使用<code>@charset</code>规则，使用双引号，<a href="https://www.w3.org/TR/CSS21/syndata.html#charset">CSS规范不允许使用单引号</a>。</p>
 
-<p>Exception: If you do need to use the <code>@charset</code> rule, use double quotation
-marks&#8212;<a href="https://www.w3.org/TR/CSS21/syndata.html#charset">single quotation marks are not permitted</a>.</p>
-
-<pre><code class="language-css prettyprint badcode">/* Not recommended */
+<pre><code class="language-css prettyprint badcode">/* 不推荐 */
 @import url("https://www.google.com/css/maia.css");
 
 html {
@@ -753,7 +584,7 @@ html {
 }
 </code></pre>
 
-<pre><code class="language-css prettyprint">/* Recommended */
+<pre><code class="language-css prettyprint">/* 推荐 */
 @import url(https://www.google.com/css/maia.css);
 
 html {
@@ -761,14 +592,11 @@ html {
 }
 </code></pre>
 
-<h3 id="CSS_Meta_Rules">4.3 CSS Meta Rules</h3>
+<h3 id="CSS_Meta_Rules">4.3 CSS元规则</h3>
 
-<h4 id="Section_Comments">4.3.1 Section Comments</h4>
+<h4 id="Section_Comments">4.3.1 分段注释</h4>
 
-<p>Group sections by a section comment (optional).</p>
-
-<p>If possible, group style sheet sections together by using comments. Separate
-sections with new lines.</p>
+<p>（可选）使用分段注释将CSS分成几段，每段之间用空行分隔。</p>
 
 <pre><code class="language-css prettyprint">/* Header */
 
@@ -783,21 +611,14 @@ sections with new lines.</p>
 .adw-gallery {}
 </code></pre>
 
-<h2 id="Parting_Words">Parting Words</h2>
+<h2 id="Parting_Words">多余的话</h2>
 
-<p><em>Be consistent.</em></p>
+<p><em>保持代码一致性。</em></p>
 
-<p>If you&#8217;re editing code, take a few minutes to look at the code around you and
-determine its style. If they use spaces around all their arithmetic operators,
-you should too. If their comments have little boxes of hash marks around them,
-make your comments have little boxes of hash marks around them too.</p>
+<p>修改代码之前，花几分钟时间观察一下现有的代码风格。遵守现有代码的风格，像现有代码一样在运算符两边添加空格，像现有代码一样在注释前后添加<code>#</code>串。</p>
 
-<p>The point of having style guidelines is to have a common vocabulary of coding so
-people can concentrate on what you&#8217;re saying rather than on how you&#8217;re saying
-it. We present global style rules here so people know the vocabulary, but local
-style is also important. If code you add to a file looks drastically different
-from the existing code around it, it throws readers out of their rhythm when
-they go to read it. Avoid this.</p>
+<p>代码规范存在的意义在于让大家用统一的方式写代码，从而专注于思考所表达的内容，而不是表达的方式。
+  这里列出了统一的规范，但局部的风格也很重要。如果往一个文件中添加了一段风格迥异的代码，会让其他人读代码时非常不适。尽量避免这么做。</p>
 </div>
 </body>
 </html>

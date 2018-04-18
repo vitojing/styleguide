@@ -1167,11 +1167,9 @@ return handleTextResponse(response);
 
 <p>在route层代码中使用ES6或者CommonJS模块化机制均可，但用法要统一，不要混用。推荐使用ES6模块化机制。</p>
 
-<p>目前平台上的浏览器代码统一使用webpack提供的模块化能力，webpack支持CommonJS、AMD、ES6标准以及webpack自定义的模块化机制。</p>
+<p>目前平台上的浏览器Javascript代码统一使用webpack提供的模块化能力，所使用的webpack支持CommonJS、AMD以及webpack自定义的模块化机制。</p>
 
-<p>推荐使用ES6模块化机制，CommonJS、AMD也可使用，如非必要不要使用webpack自定义的机制。</p>
-
-<p>如果需要代码分割，使用AMD的require机制。</p>
+<p>对浏览器Javascript代码推荐使用AMD模块化机制，同步加载使用AMD define函数，需要代码分割异步加载则使用AMD require函数，如非必要不要使用webpack自定义的机制。</p>
 
 <p>注意：应用对其他应用提供的widget随应用本身发布，其他应用在html中通过script标签引用改widget。为保证执行顺序可靠性，所有widget不允许使用AMD的require机制。</p>
 
